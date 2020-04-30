@@ -1,0 +1,9 @@
+{ "fields": [
+    { "name": "UUID" },
+    { "name": "firstName", "caption": "First name" },
+    { "name": "middleName", "caption": "Middle name" },
+    { "name": "lastName", "caption": "Last name" },
+    { "name": "birthDate", "caption": "Birthdate" },
+    { "name": "gender", "caption": "Gender" },
+    { "name": "brgyRegVoter", "caption": "Brgy. Registered Voter" }
+]}

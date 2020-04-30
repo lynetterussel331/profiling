@@ -1,0 +1,4 @@
+{ "items": [
+    { "name": "Member", "path": "/members" },
+    { "name": "Relatives", "path": "/relatives" }
+]}

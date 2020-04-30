@@ -1,0 +1,5 @@
+{ "fields": [
+    { "name": "UUID" },
+    { "name": "type", "caption": "Contact Type" },
+    { "name": "value", "caption": "Value" }
+]}
