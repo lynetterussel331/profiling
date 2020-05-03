@@ -1,0 +1,28 @@
+.generic-badge {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.value-true {
+        background-color: #C8E6C9;
+        color: #256029;
+    }
+
+    &.value-false {
+        background-color: #FFCDD2;
+        color: #C63737;
+    }
+
+    &.value-MALE {
+        background-color: #B3E5FC;
+        color: #23547B;
+    }
+
+    &.value-FEMALE {
+        background-color: #ffc0cb;
+        color: #c71585;
+    }
+}

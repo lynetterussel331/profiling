@@ -1,8 +1,0 @@
-{ "fields": [
-    { "name": "UUID" },
-    { "name": "firstName" },
-    { "name": "middleName" },
-    { "name": "lastName" },
-    { "name": "birthdate" },
-    { "name": "gender" }
-]}
