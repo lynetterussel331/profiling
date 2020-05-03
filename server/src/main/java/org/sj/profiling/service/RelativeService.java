@@ -21,6 +21,13 @@ public class RelativeService {
         return relativeRepository.create(relative);
     }
 
+    public List<Relative> createRelatives(List<Relative> relativeList) {
+        for (Relative relative: relativeList) {
+            relativeRepository.create(relative);
+        }
+        return relativeList;
+    }
+
     public Relative getRelative(UUID UUID) {
         return relativeRepository.get(UUID);
     }

@@ -18,9 +18,14 @@ public class MemberController {
         return memberService.getAllMember();
     }
 
+//    @RequestMapping(value = "members", method = RequestMethod.POST)
+//    public Member create(@RequestBody Member member) {
+//        return memberService.createMember(member);
+//    }
+
     @RequestMapping(value = "members", method = RequestMethod.POST)
-    public Member create(@RequestBody Member member) {
-        return memberService.createMember(member);
+    public List<Member> createList(@RequestBody List<Member> memberList) {
+        return memberService.createMembers(memberList);
     }
 
     @RequestMapping(value = "members/{UUID}", method = RequestMethod.GET)

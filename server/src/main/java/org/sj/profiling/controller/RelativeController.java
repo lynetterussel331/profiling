@@ -23,9 +23,14 @@ public class RelativeController {
         return relativeService.getAllRelative();
     }
 
+//    @RequestMapping(value = "relatives", method = RequestMethod.POST)
+//    public Relative create(@RequestBody Relative relative) {
+//        return relativeService.createRelative(relative);
+//    }
+
     @RequestMapping(value = "relatives", method = RequestMethod.POST)
-    public Relative create(@RequestBody Relative relative) {
-        return relativeService.createRelative(relative);
+    public List<Relative> createList(@RequestBody List<Relative> relativeList) {
+        return relativeService.createRelatives(relativeList);
     }
 
     @RequestMapping(value = "relatives/{UUID}", method = RequestMethod.GET)

@@ -21,6 +21,13 @@ public class MemberService {
         return memberRepository.create(member);
     }
 
+    public List<Member> createMembers(List<Member> memberList) {
+        for (Member member: memberList) {
+            memberRepository.create(member);
+        }
+        return memberList;
+    }
+
     public Member getMember(UUID UUID) {
         return memberRepository.get(UUID);
     }
