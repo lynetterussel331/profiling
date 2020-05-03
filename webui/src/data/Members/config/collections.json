@@ -1,4 +1,4 @@
 { "collections": [
-    { "name": "Relative", "path": "memberRelatives" },
-    { "name": "Contact", "path": "memberContacts" }
+    { "name": "Relatives", "path": "memberRelatives" },
+    { "name": "Contacts", "path": "memberContacts" }
 ]}

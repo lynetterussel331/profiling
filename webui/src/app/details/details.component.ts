@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { UiDataConfigService, Details } from '../service/ui-data-config.service';
+import { UiDataConfigService } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
 
 export interface ItemDetails {
@@ -15,7 +13,8 @@ export interface ItemDetails {
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DetailsComponent implements OnInit {
 
@@ -30,7 +29,7 @@ export class DetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => this.uuid = params.get('uuid'));
+    this.uuid = this.uiDataConfigService.getCurrentPageParams(this.route).get('uuid');
     this.route.url.subscribe(value => {
       this.uiDataConfigService.getMenuConfigDetailsUsingPath(value[1].path).subscribe(config => {
         console.log('config', config);

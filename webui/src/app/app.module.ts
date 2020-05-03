@@ -15,6 +15,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TabViewModule } from 'primeng/tabview';
 
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -24,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DetailsComponent } from './details/details.component';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonsComponent } from './buttons/buttons.component';
+import { CollectionsComponent } from './collections/collections.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { ButtonsComponent } from './buttons/buttons.component';
     DashboardComponent,
     ListComponent,
     DetailsComponent,
-    ButtonsComponent
+    ButtonsComponent,
+    CollectionsComponent
   ],
   imports: [
     AppRoutes,
@@ -48,7 +51,8 @@ import { ButtonsComponent } from './buttons/buttons.component';
     HttpClientModule,
     RadioButtonModule,
     MultiSelectModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    TabViewModule
   ],
   providers: [ ],
   bootstrap: [ AppComponent ]

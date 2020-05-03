@@ -15,8 +15,7 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit() { }
 
   login() {
     if (this.username === 'admin' && this.password === 'test') {
