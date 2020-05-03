@@ -1,0 +1,19 @@
+{
+    "items": [
+        {
+            "label": "Home",
+            "icon": "pi pi-fw pi-home",
+            "path": "home"
+        },
+        {
+            "label": "Members",
+            "icon": "pi pi-fw pi-user",
+            "path": "members"
+        },
+        {
+            "label": "Relatives",
+            "icon": "pi pi-fw pi-users",
+            "path": "relatives"
+        }
+    ]
+}

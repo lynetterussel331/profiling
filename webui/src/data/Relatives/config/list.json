@@ -1,0 +1,8 @@
+{ "list": [
+    { "name": "uuid" },
+    { "name": "firstName", "caption": "First name" },
+    { "name": "middleName", "caption": "Middle name" },
+    { "name": "lastName", "caption": "Last name" },
+    { "name": "gender", "caption": "Gender", "hasBadge": true },
+    { "name": "occupation", "caption": "Occupation" }
+]}

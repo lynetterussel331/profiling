@@ -3,6 +3,6 @@
     { "name": "firstName" },
     { "name": "middleName" },
     { "name": "lastName" },
-    { "name": "birthDate" },
+    { "name": "birthdate" },
     { "name": "gender" }
 ]}

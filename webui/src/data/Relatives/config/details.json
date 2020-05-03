@@ -4,7 +4,6 @@
     { "name": "middleName", "caption": "Middle name" },
     { "name": "lastName", "caption": "Last name" },
     { "name": "gender", "caption": "Gender" },
-    { "name": "brgyRegVoter", "caption": "Brgy. Registered Voter" },
     { "name": "occupation", "caption": "Occupation" },
     { "name": "address", "caption": "Address" }
 ]}
