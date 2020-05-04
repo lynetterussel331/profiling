@@ -1,4 +1,4 @@
-{ "fields": [
+{ "list": [
     { "name": "UUID" },
     { "name": "firstName", "caption": "First name" },
     { "name": "middleName", "caption": "Middle name" },

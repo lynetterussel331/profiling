@@ -1,0 +1,4 @@
+{ "list": [
+    { "name": "type", "caption": "Type" },
+    { "name": "value", "caption": "Value" }
+]}

@@ -13,8 +13,8 @@ public class RelativeContactService {
     @Autowired
     private RelativeContactRepository relativeContactRepository;
 
-    public List<RelativeContact> getAllRelativeContact() {
-        return relativeContactRepository.list();
+    public List<RelativeContact> getAllRelativeContact(UUID relativeUUID) {
+        return relativeContactRepository.list(relativeUUID);
     }
 
     public RelativeContact createRelativeContact(RelativeContact relativeContact) {

@@ -36,6 +36,7 @@ export interface CollectionList {
   name: string;
   caption: string;
   hasBadge?: boolean;
+  forEach(arg0: (element: any) => void);
 }
 
 @Injectable({
@@ -101,7 +102,7 @@ export class UiDataConfigService {
   getCollectionListConfig(item: string, collection: string): Observable<CollectionList> {
     return this.httpClient.get<any>(`data/${item}/config/list${collection}.json`, {
       responseType: 'json'
-    });
+    }).pipe(map(config => config.list));
   }
 
 }

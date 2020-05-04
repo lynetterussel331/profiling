@@ -16,8 +16,8 @@ public class RelativeContactRepository {
     @Autowired @Lazy
     private RelativeContactJpaRepository jpaRepository;
 
-    public List<RelativeContact> list() {
-        return jpaRepository.findAll();
+    public List<RelativeContact> list(UUID relativeUUID) {
+        return jpaRepository.findByRelativeUUID(relativeUUID);
     }
 
     public RelativeContact create(RelativeContact relativeContact) {

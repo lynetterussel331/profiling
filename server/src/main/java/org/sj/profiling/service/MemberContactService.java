@@ -13,8 +13,8 @@ public class MemberContactService {
     @Autowired
     private MemberContactRepository memberContactRepository;
 
-    public List<MemberContact> getAllMemberContact() {
-        return memberContactRepository.list();
+    public List<MemberContact> getAllMemberContact(UUID memberUUID) {
+        return memberContactRepository.list(memberUUID);
     }
 
     public MemberContact createMemberContact(MemberContact memberContact) {

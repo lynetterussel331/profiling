@@ -18,19 +18,14 @@ public class RelativeContactController {
     @Autowired
     private RelativeContactService relativeContactService;
 
-    @RequestMapping(value = "relativeContacts", method = RequestMethod.GET)
-    public List<RelativeContact> list() {
-        return relativeContactService.getAllRelativeContact();
+    @RequestMapping(value = "relativeContacts/{relativeUUID}", method = RequestMethod.GET)
+    public List<RelativeContact> list(@PathVariable UUID relativeUUID) {
+        return relativeContactService.getAllRelativeContact(relativeUUID);
     }
 
     @RequestMapping(value = "relativeContacts", method = RequestMethod.POST)
     public RelativeContact create(@RequestBody RelativeContact relativeContact) {
         return relativeContactService.createRelativeContact(relativeContact);
-    }
-
-    @RequestMapping(value = "relativeContacts/{UUID}", method = RequestMethod.GET)
-    public RelativeContact get(@PathVariable UUID UUID) {
-        return relativeContactService.getRelativeContact(UUID);
     }
 
     @RequestMapping(value = "relativeContacts/{UUID}", method = RequestMethod.PUT)

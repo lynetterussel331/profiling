@@ -1,5 +1,21 @@
 <p-tabView>
     <p-tabPanel *ngFor="let coll of collections" [header]="coll.name">
-       <p-table></p-table>
+        <p-table [value]="list">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.name !== 'uuid' ? col.name : ''">
+                        {{ col.caption }}
+                        <p-sortIcon *ngIf="col.name !== 'uuid'" [field]="col.name"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-details>
+                <tr class="ui-selectable-row">
+                    <td *ngFor="let col of columns">
+                        {{ details[col.name] }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
     </p-tabPanel>
 </p-tabView>

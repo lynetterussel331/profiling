@@ -16,8 +16,8 @@ public class MemberContactRepository {
     @Autowired @Lazy
     private MemberContactJpaRepository jpaRepository;
 
-    public List<MemberContact> list() {
-        return jpaRepository.findAll();
+    public List<MemberContact> list(UUID memberUUID) {
+        return jpaRepository.findByMemberUUID(memberUUID);
     }
 
     public MemberContact create(MemberContact memberContact) {

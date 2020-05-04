@@ -1,5 +1,6 @@
 package org.sj.profiling.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.sj.profiling.model.RelativeContact;
@@ -11,4 +12,5 @@ public interface RelativeContactJpaRepository extends JpaRepository<RelativeCont
     RelativeContact save(RelativeContact relativeContact);
     void delete(RelativeContact relativeContact);
 
+    List<RelativeContact> findByRelativeUUID(UUID relativeUUID);
 }

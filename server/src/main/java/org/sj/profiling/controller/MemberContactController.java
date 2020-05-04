@@ -18,19 +18,14 @@ public class MemberContactController {
     @Autowired
     private MemberContactService memberContactService;
 
-    @RequestMapping(value = "memberContacts", method = RequestMethod.GET)
-    public List<MemberContact> list() {
-        return memberContactService.getAllMemberContact();
+    @RequestMapping(value = "memberContacts/{memberUUID}", method = RequestMethod.GET)
+    public List<MemberContact> list(@PathVariable UUID memberUUID) {
+        return memberContactService.getAllMemberContact(memberUUID);
     }
 
     @RequestMapping(value = "memberContacts", method = RequestMethod.POST)
     public MemberContact create(@RequestBody MemberContact memberContact) {
         return memberContactService.createMemberContact(memberContact);
-    }
-
-    @RequestMapping(value = "memberContacts/{UUID}", method = RequestMethod.GET)
-    public MemberContact get(@PathVariable UUID UUID) {
-        return memberContactService.getMemberContact(UUID);
     }
 
     @RequestMapping(value = "memberContacts/{UUID}", method = RequestMethod.PUT)
