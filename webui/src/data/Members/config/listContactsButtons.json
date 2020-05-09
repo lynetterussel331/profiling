@@ -1,0 +1,5 @@
+{ "buttons": [
+    { "label": "New" },
+    { "label": "Edit" },
+    { "label": "Delete" }
+]}
