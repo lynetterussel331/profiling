@@ -1,5 +1,6 @@
 package org.sj.profiling.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.sj.profiling.model.MemberRelative;
@@ -10,5 +11,7 @@ public interface MemberRelativeJpaRepository extends JpaRepository<MemberRelativ
     Optional<MemberRelative> findByUUID(UUID UUID);
     MemberRelative save(MemberRelative memberRelative);
     void delete(MemberRelative memberRelative);
+
+    List<MemberRelative> findByMemberUUID(UUID memberUUID);
 
 }

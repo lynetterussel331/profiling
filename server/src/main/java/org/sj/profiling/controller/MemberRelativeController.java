@@ -18,9 +18,9 @@ public class MemberRelativeController {
     @Autowired
     private MemberRelativeService memberRelativeService;
 
-    @RequestMapping(value = "memberRelatives", method = RequestMethod.GET)
-    public List<MemberRelative> list() {
-        return memberRelativeService.getAllMemberRelative();
+    @RequestMapping(value = "memberRelatives/{memberUUID}", method = RequestMethod.GET)
+    public List<MemberRelative> list(@PathVariable UUID memberUUID) {
+        return memberRelativeService.getAllMemberRelative(memberUUID);
     }
 
     @RequestMapping(value = "memberRelatives", method = RequestMethod.POST)
@@ -28,10 +28,10 @@ public class MemberRelativeController {
         return memberRelativeService.createMemberRelative(memberRelative);
     }
 
-    @RequestMapping(value = "memberRelatives/{UUID}", method = RequestMethod.GET)
-    public MemberRelative get(@PathVariable UUID UUID) {
-        return memberRelativeService.getMemberRelative(UUID);
-    }
+//    @RequestMapping(value = "memberRelatives/{UUID}", method = RequestMethod.GET)
+//    public MemberRelative get(@PathVariable UUID UUID) {
+//        return memberRelativeService.getMemberRelative(UUID);
+//    }
 
     @RequestMapping(value = "memberRelatives/{UUID}", method = RequestMethod.PUT)
     public MemberRelative update(@PathVariable UUID UUID, @RequestBody MemberRelative memberRelative) {

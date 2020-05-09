@@ -13,8 +13,8 @@ public class MemberRelativeService {
     @Autowired
     private MemberRelativeRepository memberRelativeRepository;
 
-    public List<MemberRelative> getAllMemberRelative() {
-        return memberRelativeRepository.list();
+    public List<MemberRelative> getAllMemberRelative(UUID memberUUID) {
+        return memberRelativeRepository.list(memberUUID);
     }
 
     public MemberRelative createMemberRelative(MemberRelative memberRelative) {

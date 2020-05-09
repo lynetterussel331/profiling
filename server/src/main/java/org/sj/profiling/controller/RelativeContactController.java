@@ -28,10 +28,10 @@ public class RelativeContactController {
         return relativeContactService.createRelativeContact(relativeContact);
     }
 
-    @RequestMapping(value = "relativeContacts/{UUID}", method = RequestMethod.PUT)
-    public RelativeContact update(@PathVariable UUID UUID, @RequestBody RelativeContact relativeContact) {
-        return relativeContactService.updateRelativeContact(UUID, relativeContact);
-    }
+//    @RequestMapping(value = "relativeContacts/{UUID}", method = RequestMethod.PUT)
+//    public RelativeContact update(@PathVariable UUID UUID, @RequestBody RelativeContact relativeContact) {
+//        return relativeContactService.updateRelativeContact(UUID, relativeContact);
+//    }
 
     @RequestMapping(value = "relativeContacts/{UUID}", method = RequestMethod.DELETE)
     public void delete(@PathVariable UUID UUID) {

@@ -16,8 +16,8 @@ public class MemberRelativeRepository {
     @Autowired @Lazy
     private MemberRelativeJpaRepository jpaRepository;
 
-    public List<MemberRelative> list() {
-        return jpaRepository.findAll();
+    public List<MemberRelative> list(UUID memberUUID) {
+        return jpaRepository.findByMemberUUID(memberUUID);
     }
 
     public MemberRelative create(MemberRelative memberRelative) {

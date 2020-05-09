@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "RELATIVE")
 @EntityListeners(AuditingEntityListener.class)
-@Getter @Setter
+@Getter @Setter @ToString
 public class Relative {
 
     @Id
