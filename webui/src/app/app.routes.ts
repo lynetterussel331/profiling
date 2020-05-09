@@ -8,9 +8,7 @@ export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent },
-
     { path: 'sj/:item/:uuid', component: DetailsComponent }
-
 ];
 
 export const AppRoutes: ModuleWithProviders = RouterModule.forRoot(routes, { enableTracing: false });

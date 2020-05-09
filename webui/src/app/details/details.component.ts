@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UiDataConfigService } from '../service/ui-data-config.service';
+import { UiDataConfigService, Menu } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export interface ItemDetails {
   name: string;
@@ -16,28 +18,41 @@ export interface ItemDetails {
   styleUrls: ['./details.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
 
-  title: string;
+  activeItem: Menu;
+  label: string;
+  type: string;
   uuid: string;
+  path: string;
   details: ItemDetails[] = [];
+
+  subscriptions = new Subscription();
+  onDestroy$ = new Subject();
 
   constructor(
     public route: ActivatedRoute,
     private uiDataConfigService: UiDataConfigService,
     private apiService: ApiService
-  ) { }
+  ) {
+    this.type = 'details';
+    const params = this.uiDataConfigService.getPageParams(this.route);
+    this.uuid = params.get('uuid');
+    this.path = params.get('item');
+  }
 
   ngOnInit() {
-    this.uuid = this.uiDataConfigService.getCurrentPageParams(this.route).get('uuid');
-    this.route.url.subscribe(value => {
-      this.uiDataConfigService.getMenuConfigDetailsUsingPath(value[1].path).subscribe(config => {
-        console.log('config', config);
-        this.title = config.label;
-        this.uiDataConfigService.getDetailsConfig(config.label)
-          .subscribe(details => {
-            if (config.path) {
-              this.apiService.getDetails(config.path, this.uuid)
+    this.subscriptions.add(
+      this.uiDataConfigService.getMenuConfigDetailsUsingPath(this.path)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(config => {
+          this.activeItem = config;
+          this.label = config.label;
+          this.uiDataConfigService.getDetailsConfig(config.label)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(details => {
+              this.apiService.getDetails(this.path, this.uuid)
+                .pipe(takeUntil(this.onDestroy$))
                 .subscribe(data => {
                   details.forEach(field => {
                     if (field.caption) {
@@ -45,11 +60,15 @@ export class DetailsComponent implements OnInit {
                     }
                   });
               });
-            }
-            console.log('details', this.details);
-          });
-      });
-    });
+            });
+        })
+    );
+  }
+
+  ngOnDestroy() {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+    this.subscriptions.unsubscribe();
   }
 
 }

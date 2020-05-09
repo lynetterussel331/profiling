@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, filter, concatMap } from 'rxjs/operators';
+import { map, filter, flatMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 export interface Menu {
@@ -51,7 +51,7 @@ export class UiDataConfigService {
     private httpClient: HttpClient
   ) { }
 
-  getCurrentPageParams(route: ActivatedRoute) {
+  getPageParams(route: ActivatedRoute) {
     let paramMap;
     route.paramMap.subscribe(params => paramMap = params);
     return paramMap;
@@ -63,46 +63,41 @@ export class UiDataConfigService {
     }).pipe(map(config => config.items));
   }
 
-  getMenuConfigDetails(label: string): Observable<Menu> {
-    return this.getMenuConfig().pipe(
-      concatMap(array => array),
-      filter(rec => rec.label === label));
+  getMenuConfigList() {
+    return this.getMenuConfig().pipe( flatMap(array => array) );
+  }
+
+  getMenuConfigDetailsUsingLabel(label: string): Observable<Menu> {
+    return this.getMenuConfigList().pipe( filter(rec => rec.label === label) );
   }
 
   getMenuConfigDetailsUsingPath(path: string): Observable<Menu> {
-    return this.getMenuConfig().pipe(
-      concatMap(array => array),
-      filter(rec => rec.path === path));
+    return this.getMenuConfigList().pipe( filter(rec => rec.path === path) );
   }
 
-  getListConfig(item: string): Observable<List> {
-    return this.httpClient.get<any>(`data/${item}/config/list.json`, {
-      responseType: 'json'
-    }).pipe(map(config => config.list));
+  getListConfig(item: string): Observable<any> {
+    return this.httpClient.get<any>(`data/${item}/config/list.json`, { responseType: 'json' })
+      .pipe(map(config => config.list));
   }
 
-  getButtonsConfig(item: string): Observable<Button> {
-    return this.httpClient.get<any>(`data/${item}/config/buttons.json`, {
-      responseType: 'json'
-    }).pipe( map(config => config.buttons));
+  getButtonsConfig(item: string, type: string): Observable<Button> {
+    return this.httpClient.get<any>(`data/${item}/config/${type}Buttons.json`, { responseType: 'json' })
+      .pipe(map(config => config.buttons));
   }
 
   getDetailsConfig(item: string): Observable<Details> {
-    return this.httpClient.get<any>(`data/${item}/config/details.json`, {
-      responseType: 'json'
-    }).pipe(map(config => config.details));
+    return this.httpClient.get<any>(`data/${item}/config/details.json`, { responseType: 'json' })
+      .pipe(map(config => config.details));
   }
 
   getCollectionConfig(item: string): Observable<Collection> {
-    return this.httpClient.get<any>(`data/${item}/config/collections.json`, {
-      responseType: 'json'
-    }).pipe(map(config => config.collections));
+    return this.httpClient.get<any>(`data/${item}/config/collections.json`, { responseType: 'json' })
+      .pipe(map(config => config.collections));
   }
 
   getCollectionListConfig(item: string, collection: string): Observable<CollectionList> {
-    return this.httpClient.get<any>(`data/${item}/config/list${collection}.json`, {
-      responseType: 'json'
-    }).pipe(map(config => config.list));
+    return this.httpClient.get<any>(`data/${item}/config/list${collection}.json`, { responseType: 'json' })
+      .pipe(map(config => config.list));
   }
 
 }

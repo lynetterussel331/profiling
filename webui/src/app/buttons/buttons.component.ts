@@ -1,38 +1,44 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
-import { UiDataConfigService, Menu, Button } from '../service/ui-data-config.service';
-import { Subject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Component, Input, OnDestroy, DoCheck } from '@angular/core';
+import { UiDataConfigService, Button, Menu } from '../service/ui-data-config.service';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-buttons',
   templateUrl: './buttons.component.html',
   styleUrls: ['./buttons.component.css']
 })
-export class ButtonsComponent implements OnInit, OnChanges, OnDestroy {
-
-  private unsubscribe$ = new Subject();
+export class ButtonsComponent implements DoCheck, OnDestroy {
 
   @Input() activeItem: Menu;
-  buttons: Button[] = [];
+  @Input() type: string;
+  buttons: Button;
+
+  executed: boolean;
+
+  private subscriptions = new Subscription();
+  private onDestroy$ = new Subject();
 
   constructor(
     private uiDataConfigService: UiDataConfigService
   ) { }
 
-  ngOnInit() { }
-
-  ngOnChanges() {
-    if (this.activeItem) {
-      this.uiDataConfigService.getButtonsConfig(this.activeItem.label)
+  ngDoCheck() {
+    if (!this.executed && this.activeItem) {
+      this.subscriptions.add(this.uiDataConfigService.getButtonsConfig(this.activeItem.label, this.type)
+        .pipe(takeUntil(this.onDestroy$))
         .subscribe(buttons => {
-          Object.assign(this.buttons, buttons);
-      });
+          this.buttons = buttons;
+        })
+      );
+      this.executed = true;
     }
   }
 
   ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+    this.subscriptions.unsubscribe();
   }
 
 }
