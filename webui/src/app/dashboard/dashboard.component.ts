@@ -3,6 +3,8 @@ import { Menu, UiDataConfigService, List } from '../service/ui-data-config.servi
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApiService } from '../service/api.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UtilsService } from '../service/utils.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,10 +25,15 @@ export class DashboardComponent implements DoCheck {
   list: any;
 
   executed: boolean;
+  path: string;
+  HOME = 'Home';
 
   constructor(
+    private router: Router,
+    private route: ActivatedRoute,
     private uiConfigService: UiDataConfigService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private utilsService: UtilsService
   ) {
     this.type = 'list';
     this.uiConfigService.getMenuConfig().subscribe((data: Menu[]) => {
@@ -35,12 +42,14 @@ export class DashboardComponent implements DoCheck {
           label: item.label, icon: item.icon, path: item.path
         });
       });
-      this.activeItem = this.items[1];
+      this.activeItem = this.items[0];
     });
   }
 
   ngDoCheck() {
-    if (!this.executed && this.activeItem) {
+    this.path = this.utilsService.getUrlDetails(this.route).path;
+    this.activeItem = this.items.filter(item => item.path === this.path)[0];
+    if (!this.executed && this.activeItem && this.activeItem.label !== this.HOME) {
       this.updateListContents();
       this.executed = true;
     }
@@ -48,7 +57,7 @@ export class DashboardComponent implements DoCheck {
 
   updateActiveItem() {
     this.activeItem = this.tabContainer.first.activeItem;
-    this.updateListContents();
+    this.router.navigateByUrl(this.activeItem.path);
   }
 
   updateListContents() {

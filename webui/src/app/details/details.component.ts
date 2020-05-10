@@ -4,6 +4,7 @@ import { UiDataConfigService, Menu } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UtilsService } from '../service/utils.service';
 
 export interface ItemDetails {
   name: string;
@@ -33,12 +34,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     private uiDataConfigService: UiDataConfigService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private utilsService: UtilsService
   ) {
     this.type = 'details';
-    const snapshot = this.route.snapshot;
-    this.uuid = snapshot.params.uuid;
-    this.path = snapshot._urlSegment.segments[0].path;
+    const url = this.utilsService.getUrlDetails(this.route);
+    this.uuid = url.uuid;
+    this.path = url.path;
   }
 
   ngOnInit() {

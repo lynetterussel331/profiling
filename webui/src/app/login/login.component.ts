@@ -25,7 +25,7 @@ export class LoginComponent {
     const encrPassword = 'Ns0Sy8MnfTey2aVi6N8yBA==';
     if (this.EncrDecr.set(this.key, this.username) === encrUsername &&
           this.EncrDecr.set(this.key, this.password) === encrPassword) {
-      this.router.navigateByUrl('dashboard');
+      this.router.navigateByUrl('home');
     }
   }
 

@@ -7,7 +7,10 @@ import { DetailsComponent } from './details/details.component';
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    { path: 'dashboard', component: DashboardComponent },
+
+    { path: 'home', component: DashboardComponent },
+    { path: 'members', component: DashboardComponent },
+    { path: 'relatives', component: DashboardComponent },
 
     { path: 'members/:uuid', component: DetailsComponent },
     { path: 'relatives/:uuid', component: DetailsComponent }

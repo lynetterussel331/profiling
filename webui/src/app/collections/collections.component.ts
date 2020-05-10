@@ -4,6 +4,7 @@ import { UiDataConfigService, Menu } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UtilsService } from '../service/utils.service';
 
 @Component({
   selector: 'app-collections',
@@ -34,15 +35,16 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     private uiConfigService: UiDataConfigService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private utilsService: UtilsService
   ) {
     this.rows = 10;
   }
 
   ngOnInit() {
-    const snapshot = this.route.snapshot;
-    this.uuid = snapshot.params.uuid;
-    this.path = snapshot._urlSegment.segments[0].path;
+    const url = this.utilsService.getUrlDetails(this.route);
+    this.uuid = url.uuid;
+    this.path = url.path;
 
     this.uiConfigService.getCollectionConfig(this.activeItem.label)
     .pipe(takeUntil(this.onDestroy$))
