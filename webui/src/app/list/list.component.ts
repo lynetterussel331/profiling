@@ -18,7 +18,6 @@ export class ListComponent implements OnDestroy {
   rows: number;
   selectedRow: any;
   cities: any[];
-  root = 'sj';
 
   subscriptions = new Subscription();
   onDestroy$ = new Subject();
@@ -45,7 +44,7 @@ export class ListComponent implements OnDestroy {
       const parentField = mainCol[0].parent.name;
       uuid = this.list.filter(list => list.uuid === selectedUUID)[0][parentField];
     }
-    this.router.navigate([this.root, pathToRedirect, uuid]);
+    this.router.navigate([pathToRedirect, uuid]);
   }
 
   ngOnDestroy() {

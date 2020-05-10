@@ -36,9 +36,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private apiService: ApiService
   ) {
     this.type = 'details';
-    const params = this.route.snapshot.params;
-    this.uuid = params.uuid;
-    this.path = params.item;
+    const snapshot = this.route.snapshot;
+    this.uuid = snapshot.params.uuid;
+    this.path = snapshot._urlSegment.segments[0].path;
   }
 
   ngOnInit() {
