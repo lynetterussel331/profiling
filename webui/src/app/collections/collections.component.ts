@@ -40,9 +40,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const params = this.uiConfigService.getPageParams(this.route);
-    this.uuid = params.get('uuid');
-    this.path = params.get('item');
+    const params = this.route.snapshot.params;
+    this.uuid = params.uuid;
+    this.path = params.item;
 
     this.uiConfigService.getCollectionConfig(this.activeItem.label)
     .pipe(takeUntil(this.onDestroy$))

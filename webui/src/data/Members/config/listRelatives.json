@@ -1,4 +1,4 @@
 { "list": [
-    { "name": "relativeUUID", "caption": "Relative" },
+    { "name": "uuid", "type": "radiobutton", "parent": { "name": "relativeUUID", "path": "relatives" } },
     { "name": "relationship", "caption": "Relationship" }
 ]}

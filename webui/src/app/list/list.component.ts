@@ -23,14 +23,29 @@ export class ListComponent implements OnDestroy {
   subscriptions = new Subscription();
   onDestroy$ = new Subject();
 
+  selectedValue: string;
+
   constructor(
-    private router: Router
+    private router: Router,
   ) {
     this.rows = 10;
   }
 
+  selectRadioButton() { }
+
   redirectToDetails(selectedUUID) {
-    this.router.navigate([this.root, this.activeItem.path, selectedUUID]);
+    let pathToRedirect;
+    let uuid;
+    if (this.type === 'list') {
+      pathToRedirect = this.activeItem.path;
+      uuid = selectedUUID;
+    } else {
+      const mainCol: any = this.columns.filter(col => col.name === 'uuid');
+      pathToRedirect = mainCol[0].parent.path;
+      const parentField = mainCol[0].parent.name;
+      uuid = this.list.filter(list => list.uuid === selectedUUID)[0][parentField];
+    }
+    this.router.navigate([this.root, pathToRedirect, uuid]);
   }
 
   ngOnDestroy() {

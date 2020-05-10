@@ -1,5 +1,5 @@
 { "list": [
-    { "name": "uuid" },
+    { "name": "uuid", "type": "radiobutton" },
     { "name": "firstName", "caption": "First name" },
     { "name": "middleName", "caption": "Middle name" },
     { "name": "lastName", "caption": "Last name" },

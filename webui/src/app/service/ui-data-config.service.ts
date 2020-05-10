@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, filter, flatMap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 
 export interface Menu {
   label: string;
@@ -50,12 +49,6 @@ export class UiDataConfigService {
   constructor(
     private httpClient: HttpClient
   ) { }
-
-  getPageParams(route: ActivatedRoute) {
-    let paramMap;
-    route.paramMap.subscribe(params => paramMap = params);
-    return paramMap;
-  }
 
   getMenuConfig(): Observable<Menu[]> {
     return this.httpClient.get<any>(`data/menuConfig.json`, {
