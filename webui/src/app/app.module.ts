@@ -12,7 +12,6 @@ import { PanelModule } from 'primeng/panel';
 import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { MenuItem } from 'primeng/api';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TabViewModule } from 'primeng/tabview';
@@ -26,6 +25,7 @@ import { DetailsComponent } from './details/details.component';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { CollectionsComponent } from './collections/collections.component';
+import { EncrDecrService } from './service/encr-decr.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +54,7 @@ import { CollectionsComponent } from './collections/collections.component';
     BreadcrumbModule,
     TabViewModule
   ],
-  providers: [ ],
+  providers: [ EncrDecrService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
