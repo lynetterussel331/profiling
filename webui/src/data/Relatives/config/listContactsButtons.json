@@ -1,5 +1,5 @@
 { "buttons": [
     { "label": "New" },
-    { "label": "Edit" },
-    { "label": "Delete" }
+    { "label": "Edit", "displayOnSelect": true },
+    { "label": "Delete", "displayOnSelect": true }
 ]}

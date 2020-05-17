@@ -1,4 +1,4 @@
-<app-buttons [activeItem]="activeItem" [type]="type"></app-buttons>
+<app-buttons [activeItem]="activeItem" [type]="type" #buttonComponent></app-buttons>
 <p-table [value]="list" [paginator]="true" [rows]="rows" [(selection)]="selectedRow" styleClass="ui-table-generic" [rowHover]="true">
     <ng-template pTemplate="header">
         <tr>
@@ -16,7 +16,7 @@
                         <button pButton type="button" class="ui-button-secondary" icon="pi pi-cog" (click)="redirectToDetails(details.uuid)"></button>
                     </div>
                     <div *ngSwitchCase="'radiobutton'">
-                        <p-radioButton name="uuid" [value]="details[col.name]" [(ngModel)]="selectedValue"></p-radioButton>
+                        <p-radioButton name="uuid" [value]="details[col.name]" [(ngModel)]="selectedValue" (click)="buttonComponent.clickRadioButton()"></p-radioButton>
                     </div>
                     <div *ngSwitchDefault>
                         <span class="ui-column-title">{{ col.caption }}</span>

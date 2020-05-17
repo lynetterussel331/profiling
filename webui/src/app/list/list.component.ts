@@ -2,6 +2,7 @@ import { Component, OnDestroy, Input } from '@angular/core';
 import { Menu, List } from '../service/ui-data-config.service';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
+import { ButtonsComponent } from '../buttons/buttons.component';
 
 @Component({
   selector: 'app-list',
@@ -14,6 +15,7 @@ export class ListComponent implements OnDestroy {
   @Input() type: string;
   @Input() list: any;
   @Input() columns: List[];
+  @Input() buttonComponent: ButtonsComponent;
 
   rows: number;
   selectedRow: any;

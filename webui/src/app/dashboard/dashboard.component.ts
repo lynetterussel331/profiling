@@ -1,4 +1,4 @@
-import { Component, DoCheck, ViewChildren, QueryList } from '@angular/core';
+import { Component, DoCheck, ViewChild } from '@angular/core';
 import { Menu, UiDataConfigService, List } from '../service/ui-data-config.service';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { UtilsService } from '../service/utils.service';
 })
 export class DashboardComponent implements DoCheck {
 
-  @ViewChildren('tabContainer') tabContainer: QueryList<any>;
+  @ViewChild('tabContainer') tabContainer;
 
   items: any = [];
   activeItem: Menu;
@@ -56,7 +56,7 @@ export class DashboardComponent implements DoCheck {
   }
 
   updateActiveItem() {
-    this.activeItem = this.tabContainer.first.activeItem;
+    this.activeItem = this.tabContainer.activeItem;
     this.router.navigateByUrl(this.activeItem.path);
   }
 

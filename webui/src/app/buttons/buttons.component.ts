@@ -25,10 +25,11 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
 
   ngDoCheck() {
     if (!this.executed && this.activeItem) {
-      this.subscriptions.add(this.uiConfigService.getButtonsConfig(this.activeItem.label, this.type)
-        .pipe(takeUntil(this.onDestroy$))
+      this.subscriptions.add(this.uiConfigService.getButtonsConfigList(this.activeItem.label, this.type)
+        .pipe( filter(button => !button.displayOnSelect),
+          takeUntil(this.onDestroy$))
         .subscribe(buttons => {
-          this.buttons = buttons;
+          this.buttons.push(buttons);
         })
       );
       this.executed = true;
@@ -36,12 +37,11 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   }
 
   clickRadioButton() {
+    this.buttons = [];
     this.subscriptions.add(this.uiConfigService.getButtonsConfigList(this.activeItem.label, this.type)
-      .pipe(takeUntil(this.onDestroy$),
-        filter(button => button.displayOnSelect ? !button.displayOnSelect : true))
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe(buttons => {
-        Object.assign(this.buttons, buttons);
-        console.log('buttons', this.buttons);
+        this.buttons.push(buttons);
       })
     );
   }
