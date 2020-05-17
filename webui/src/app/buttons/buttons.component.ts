@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, DoCheck } from '@angular/core';
 import { UiDataConfigService, Button, Menu } from '../service/ui-data-config.service';
 import { Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-buttons',
@@ -12,7 +12,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
 
   @Input() activeItem: Menu;
   @Input() type: string;
-  buttons: Button;
+  buttons: Button[] = [];
 
   executed: boolean;
 
@@ -20,12 +20,12 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   private onDestroy$ = new Subject();
 
   constructor(
-    private uiDataConfigService: UiDataConfigService
+    private uiConfigService: UiDataConfigService
   ) { }
 
   ngDoCheck() {
     if (!this.executed && this.activeItem) {
-      this.subscriptions.add(this.uiDataConfigService.getButtonsConfig(this.activeItem.label, this.type)
+      this.subscriptions.add(this.uiConfigService.getButtonsConfig(this.activeItem.label, this.type)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(buttons => {
           this.buttons = buttons;
@@ -33,6 +33,17 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
       );
       this.executed = true;
     }
+  }
+
+  clickRadioButton() {
+    this.subscriptions.add(this.uiConfigService.getButtonsConfigList(this.activeItem.label, this.type)
+      .pipe(takeUntil(this.onDestroy$),
+        filter(button => button.displayOnSelect ? !button.displayOnSelect : true))
+      .subscribe(buttons => {
+        Object.assign(this.buttons, buttons);
+        console.log('buttons', this.buttons);
+      })
+    );
   }
 
   ngOnDestroy() {

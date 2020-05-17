@@ -2,11 +2,14 @@ package org.sj.profiling.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +39,10 @@ public class MemberRelative {
 
     @Column(name = "RELATIVE_UUID", nullable = false)
     private UUID relativeUUID;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "relative_uuid", referencedColumnName = "uuid", insertable = false, updatable = false)
+    private Relative mainDetails;
 
     @Column(name = "RELATIONSHIP", length = 20)
     private String relationship;

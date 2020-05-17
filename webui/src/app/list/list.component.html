@@ -10,19 +10,19 @@
     </ng-template>
     <ng-template pTemplate="body" let-details>
         <tr class="ui-selectable-row">
-            <td *ngFor="let col of columns" (dblclick)="redirectToDetails(type === 'list' ? details[col.name] : details[col.name])">
+            <td *ngFor="let col of columns" (dblclick)="redirectToDetails(details.uuid)">
                 <div [ngSwitch]="col.type">
                     <div *ngSwitchCase="'button'">
-                        <button pButton type="button" class="ui-button-secondary" icon="pi pi-cog" (click)="redirectToDetails(details[col.name])"></button>
+                        <button pButton type="button" class="ui-button-secondary" icon="pi pi-cog" (click)="redirectToDetails(details.uuid)"></button>
                     </div>
                     <div *ngSwitchCase="'radiobutton'">
-                        <p-radioButton name="uuid" [value]="details[col.name]" [(ngModel)]="selectedValue" (click)="selectRadioButton()"></p-radioButton>
+                        <p-radioButton name="uuid" [value]="details[col.name]" [(ngModel)]="selectedValue"></p-radioButton>
                     </div>
                     <div *ngSwitchDefault>
                         <span class="ui-column-title">{{ col.caption }}</span>
                         <div *ngIf="!col.hasBadge; then primary else badge"></div>
                         <ng-template #primary>
-                            {{ details[col.name] }}
+                            {{ details.mainDetails && details.mainDetails[col.name] ? details.mainDetails[col.name] : details[col.name] }}
                         </ng-template>
                         <ng-template #badge>
                             <span [class]="'generic-badge value-' + details[col.name]">{{ details[col.name] }}</span>

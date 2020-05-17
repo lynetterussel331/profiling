@@ -17,6 +17,7 @@ export interface List {
 
 export interface Button {
   name: string;
+  displayOnSelect: boolean;
 }
 
 export interface Details {
@@ -51,9 +52,8 @@ export class UiDataConfigService {
   ) { }
 
   getMenuConfig(): Observable<Menu[]> {
-    return this.httpClient.get<any>(`data/menuConfig.json`, {
-      responseType: 'json'
-    }).pipe(map(config => config.items));
+    return this.httpClient.get<any>(`data/menuConfig.json`, { responseType: 'json' })
+      .pipe(map(config => config.items));
   }
 
   getMenuConfigList() {
@@ -73,9 +73,13 @@ export class UiDataConfigService {
       .pipe(map(config => config.list));
   }
 
-  getButtonsConfig(item: string, type: string): Observable<Button> {
+  getButtonsConfig(item: string, type: string): Observable<Button[]> {
     return this.httpClient.get<any>(`data/${item}/config/${type}Buttons.json`, { responseType: 'json' })
       .pipe(map(config => config.buttons));
+  }
+
+  getButtonsConfigList(item: string, type: string) {
+    return this.getButtonsConfig(item, type).pipe( flatMap(array => array) );
   }
 
   getDetailsConfig(item: string): Observable<Details> {
