@@ -1,8 +1,7 @@
-import { Component, OnDestroy, Input } from '@angular/core';
-import { Menu, List } from '../service/ui-data-config.service';
+import { Component, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { MenuConfig, List } from '../service/ui-data-config.service';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
-import { ButtonsComponent } from '../buttons/buttons.component';
 
 @Component({
   selector: 'app-list',
@@ -11,20 +10,18 @@ import { ButtonsComponent } from '../buttons/buttons.component';
 })
 export class ListComponent implements OnDestroy {
 
-  @Input() activeItem: Menu;
+  @Input() activeItem: MenuConfig;
   @Input() type: string;
   @Input() list: any;
   @Input() columns: List[];
-  @Input() buttonComponent: ButtonsComponent;
+  @Output() reloadListDashboard = new EventEmitter<any>();
 
   rows: number;
   selectedRow: any;
-  cities: any[];
+  uuid: string;
 
   subscriptions = new Subscription();
   onDestroy$ = new Subject();
-
-  selectedValue: string;
 
   constructor(
     private router: Router
@@ -33,24 +30,21 @@ export class ListComponent implements OnDestroy {
   }
 
   redirectToDetails(selectedUUID) {
-    let isRedirect = false;
     let pathToRedirect;
-    let uuid;
+    let isRedirect = false;
     if (this.type === 'list') {
       pathToRedirect = this.activeItem.path;
-      uuid = selectedUUID;
       isRedirect = true;
     } else {
       const mainCol: any = this.columns.filter(col => col.name === 'uuid')[0];
       if (mainCol.parent) {
         pathToRedirect = mainCol.parent.path;
-        const parentField = mainCol.parent.name;
-        uuid = this.list.filter(list => list.uuid === selectedUUID)[0][parentField];
+        selectedUUID = this.list.filter(list => list.uuid === selectedUUID)[0][mainCol.parent.name];
         isRedirect = true;
       }
     }
     if (isRedirect) {
-      this.router.navigate([pathToRedirect, uuid]);
+      this.router.navigate([pathToRedirect, selectedUUID]);
     }
   }
 
@@ -58,6 +52,10 @@ export class ListComponent implements OnDestroy {
     this.onDestroy$.next();
     this.onDestroy$.complete();
     this.subscriptions.unsubscribe();
+  }
+
+  reloadList() {
+    this.reloadListDashboard.emit();
   }
 
 }

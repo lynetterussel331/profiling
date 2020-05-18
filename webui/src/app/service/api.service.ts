@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ButtonConfig } from './ui-data-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,23 @@ export class ApiService {
   getDetails(path: string, uuid: string): Observable<any> {
     const url = `/api/${path}/${uuid}`;
     return this.http.get<any>(url);
+  }
+
+  request(item: string, config: ButtonConfig, uuid: string, path?: string): Observable<any> {
+    let url = `/api/${item}/${uuid}`;
+
+    if (path) {
+      url += `/${path}`;
+    }
+
+    if (config.action === 'create') {
+      // return this.http.post<any>(url);
+    } else if (config.action === 'update') {
+      // return this.http.put<any>(url);
+    } else if (config.action === 'delete') {
+      return this.http.delete<any>(url);
+    } else if (config.action === 'list') {
+      return this.http.get<any>(url);
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, DoCheck, ViewChild } from '@angular/core';
-import { Menu, UiDataConfigService, List } from '../service/ui-data-config.service';
+import { MenuConfig, UiDataConfigService, List } from '../service/ui-data-config.service';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApiService } from '../service/api.service';
@@ -16,7 +16,7 @@ export class DashboardComponent implements DoCheck {
   @ViewChild('tabContainer') tabContainer;
 
   items: any = [];
-  activeItem: Menu;
+  activeItem: MenuConfig;
   type: string;
   subscriptions = new Subscription();
   onDestroy$ = new Subject();
@@ -36,14 +36,14 @@ export class DashboardComponent implements DoCheck {
     private utilsService: UtilsService
   ) {
     this.type = 'list';
-    this.uiConfigService.getMenuConfig().subscribe((data: Menu[]) => {
-      data.forEach(item => {
-        this.items.push({
-          label: item.label, icon: item.icon, path: item.path
+    this.subscriptions.add(
+      this.uiConfigService.getMenuConfig().subscribe((data: MenuConfig[]) => {
+        data.forEach(item => {
+          this.items.push({ label: item.label, icon: item.icon, path: item.path });
         });
-      });
-      this.activeItem = this.items[0];
-    });
+        this.activeItem = this.items[0];
+      })
+    );
   }
 
   ngDoCheck() {
@@ -62,18 +62,18 @@ export class DashboardComponent implements DoCheck {
 
   updateListContents() {
     if (this.activeItem && this.activeItem.label) {
-      this.subscriptions.add(this.uiConfigService.getListConfig(this.activeItem.label)
-        .pipe(takeUntil(this.onDestroy$))
-          .subscribe(columns => this.columns = columns));
-      this.subscriptions.add(this.uiConfigService.getMenuConfigDetailsUsingLabel(this.activeItem.label)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(menu => {
-          if (menu.path) {
-            this.subscriptions.add(this.apiService.getList(menu.path)
-              .pipe(takeUntil(this.onDestroy$)).subscribe(list => this.list = list));
-          }
-        })
+      this.subscriptions.add(
+        this.uiConfigService.getListConfig(this.activeItem.label)
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(columns => this.columns = columns)
       );
+      if (this.activeItem.path) {
+        this.subscriptions.add(
+          this.apiService.getList(this.activeItem.path)
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(list => this.list = list)
+        );
+      }
     }
   }
 }

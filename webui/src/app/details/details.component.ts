@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UiDataConfigService, Menu } from '../service/ui-data-config.service';
+import { UiDataConfigService, MenuConfig } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -21,8 +21,7 @@ export interface ItemDetails {
 })
 export class DetailsComponent implements OnInit, OnDestroy {
 
-  activeItem: Menu;
-  label: string;
+  activeItem: MenuConfig;
   type: string;
   uuid: string;
   path: string;
@@ -33,7 +32,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     public route: ActivatedRoute,
-    private uiDataConfigService: UiDataConfigService,
+    private uiConfigService: UiDataConfigService,
     private apiService: ApiService,
     private utilsService: UtilsService
   ) {
@@ -44,26 +43,30 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.add(
-      this.uiDataConfigService.getMenuConfigDetailsUsingPath(this.path)
+    this.subscriptions.add(this.uiConfigService.getMenuConfigDetails(this.path)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(config => {
           this.activeItem = config;
-          this.label = config.label;
-          this.uiDataConfigService.getDetailsConfig(config.label)
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe(details => {
-              this.apiService.getDetails(this.path, this.uuid)
-                .pipe(takeUntil(this.onDestroy$))
-                .subscribe(data => {
-                  details.forEach(field => {
-                    if (field.caption) {
-                      this.details.push({ name: field.name, caption: field.caption, value: data[field.name], hasBadge: field.hasBadge });
-                    }
-                  });
-              });
-            });
+          this.loadDetails(config.label);
         })
+    );
+  }
+
+  loadDetails(label: string) {
+    this.subscriptions.add(this.uiConfigService.getDetailsConfig(label)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(details => {
+        this.subscriptions.add(this.apiService.getDetails(this.path, this.uuid)
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(data => {
+            details.forEach(field => {
+              if (field.caption) {
+                this.details.push({ name: field.name, caption: field.caption, value: data[field.name], hasBadge: field.hasBadge });
+              }
+            });
+          })
+        );
+      })
     );
   }
 

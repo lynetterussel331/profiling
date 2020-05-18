@@ -4,5 +4,5 @@
     <app-home></app-home>
 </ng-template>
 <ng-template #listBlock>
-    <app-list [activeItem]="activeItem" [type]="type" [list]="list" [columns]="columns"></app-list>
+    <app-list [activeItem]="activeItem" [type]="type" [list]="list" [columns]="columns" (reloadListDashboard)="updateListContents()"></app-list>
 </ng-template>

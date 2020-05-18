@@ -1,0 +1,5 @@
+{
+    "buttons": [
+        { "label": "Delete", "action": "delete", "confirmMessage": "Are you sure you want to delete this record?" }
+    ]
+}
