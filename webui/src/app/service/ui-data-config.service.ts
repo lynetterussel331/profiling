@@ -18,7 +18,14 @@ export interface ButtonConfig {
 export interface List {
   name: string;
   caption?: string;
+  type?: string;
+  parent?: Parent;
   hasBadge?: boolean;
+}
+
+export interface Parent {
+  name: string;
+  path: string;
 }
 
 export interface Button {
@@ -36,6 +43,7 @@ export interface Details {
 export interface Collection {
   name: string;
   path: string;
+  fields: List[];
 }
 
 @Injectable({
@@ -85,11 +93,6 @@ export class UiDataConfigService {
   getCollectionConfig(item: string): Observable<Collection> {
     return this.httpClient.get<any>(`data/${item}/config/collections.json`, { responseType: 'json' })
       .pipe(map(config => config.collections));
-  }
-
-  getCollectionListConfig(item: string, collection: string): Observable<List> {
-    return this.httpClient.get<any>(`data/${item}/config/list${collection}.json`, { responseType: 'json' })
-      .pipe(map(config => config.list));
   }
 
   getGlobalButtonConfig(buttonLabel: string): Observable<any> {

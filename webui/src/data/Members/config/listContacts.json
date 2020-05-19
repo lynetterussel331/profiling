@@ -1,5 +1,0 @@
-{ "list": [
-    { "name": "uuid", "type": "radiobutton" },
-    { "name": "type", "caption": "Type" },
-    { "name": "value", "caption": "Value" }
-]}

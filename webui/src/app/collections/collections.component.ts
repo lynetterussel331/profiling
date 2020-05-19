@@ -43,30 +43,19 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.uiConfigService.getCollectionConfig(this.activeItem.label)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe((collection: any) => {
-          this.collections = collection;
-          collection.forEach((record: Collection) => {
-            this.type = record.name;
-            this.getCollectionDetails(record, url.uuid);
+        .subscribe((collections: any) => {
+          this.collections = collections;
+          this.collections.forEach((collection: Collection) => {
+            this.type = collection.name;
+            this.subscriptions.add(
+              this.apiService.getDetails(collection.path, url.uuid)
+                .pipe(takeUntil(this.onDestroy$))
+                .subscribe(list => this.collectionsData.set(collection.name, { columns: collection.fields, list }),
+                (err) => console.log(err),
+                () => this.setListData(this.collections[0].name))
+            );
           });
         })
-    );
-  }
-
-  getCollectionDetails(record: Collection, uuid: string) {
-    this.subscriptions.add(
-      this.uiConfigService.getCollectionListConfig(this.activeItem.label, record.name)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(columns => {
-        this.subscriptions.add(
-          this.apiService.getDetails(record.path, uuid)
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe(list => {
-              this.collectionsData.set(record.name, { columns, list });
-            }, (err) => console.log(err)
-            , () => this.setListData(this.collections[0].name))
-        );
-      })
     );
   }
 
