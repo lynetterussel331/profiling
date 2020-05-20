@@ -12,6 +12,7 @@ export class ListComponent implements OnDestroy {
 
   @Input() activeItem: MenuConfig;
   @Input() type: string;
+  @Input() collectionType: string;
   @Input() list: any;
   @Input() columns: List[];
   @Output() reloadListDashboard = new EventEmitter<any>();

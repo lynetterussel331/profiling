@@ -16,6 +16,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   @Input() activeItem: MenuConfig;
 
   type: string;
+  collectionType: string;
   rows: number;
   list: any;
   columns: any;
@@ -46,7 +47,8 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         .subscribe((collections: any) => {
           this.collections = collections;
           this.collections.forEach((collection: Collection) => {
-            this.type = collection.name;
+            this.type = 'collections';
+            this.collectionType = collection.name;
             this.subscriptions.add(
               this.apiService.getDetails(collection.path, url.uuid)
                 .pipe(takeUntil(this.onDestroy$))

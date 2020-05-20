@@ -76,13 +76,18 @@ export class UiDataConfigService {
       .pipe(map(config => config.list));
   }
 
-  getButtonsConfig(item: string, type: string): Observable<Button[]> {
-    return this.httpClient.get<any>(`data/${item}/config/${type}Buttons.json`, { responseType: 'json' })
-      .pipe(map(config => config.buttons));
-  }
-
-  getButtonsConfigList(item: string, type: string) {
-    return this.getButtonsConfig(item, type).pipe( flatMap(array => array) );
+  getButtonsConfig(item: string, type: string, collectionType?: string) {
+    if (['list', 'details'].includes(type)) {
+      return this.httpClient.get<any>(`data/${item}/config/buttons.json`, { responseType: 'json' })
+        .pipe(map(config => config.buttons),
+            flatMap(array => array));
+    } else if (type === 'collections' && collectionType !== undefined) {
+      return this.httpClient.get<any>(`data/${item}/config/buttons.json`, { responseType: 'json' })
+        .pipe(map(config => config.collections),
+            flatMap(array => array),
+              filter((collection: any) => collection.name === collectionType),
+                flatMap(array => array.buttons));
+    }
   }
 
   getDetailsConfig(item: string): Observable<Details> {
@@ -99,7 +104,7 @@ export class UiDataConfigService {
     return this.httpClient.get<any>(`data/buttonsConfig.json`, { responseType: 'json' })
     .pipe(map(config => config.buttons),
       flatMap(array => array),
-      filter((config: ButtonConfig) => config.label === buttonLabel));
+        filter((config: ButtonConfig) => config.label === buttonLabel));
   }
 
 }

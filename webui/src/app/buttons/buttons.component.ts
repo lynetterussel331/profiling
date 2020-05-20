@@ -14,6 +14,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
 
   @Input() activeItem: MenuConfig;
   @Input() type: string;
+  @Input() collectionType: string;
   @Input() uuid: string;
   buttons: Button[] = [];
 
@@ -32,26 +33,30 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
 
   ngDoCheck() {
     if (!this.executed && this.activeItem) {
-      this.subscriptions.add(
-        this.uiConfigService.getButtonsConfigList(this.activeItem.label, this.type)
-        .pipe( filter(button => !button.displayOnSelect),
-          takeUntil(this.onDestroy$))
-        .subscribe(buttons => {
-          this.buttons.push(buttons);
-        })
-      );
+      this.loadButtons(this.type);
       this.executed = true;
     }
   }
 
-  clickRadioButton() {
+  clickRadioButton(type: string) {
     this.buttons = [];
+    this.loadButtons(type, true);
+  }
+
+  loadButtons(type: string, buttonClicked?: boolean) {
     this.subscriptions.add(
-      this.uiConfigService.getButtonsConfigList(this.activeItem.label, this.type)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(buttons => {
-        this.buttons.push(buttons);
-      })
+      this.uiConfigService.getButtonsConfig(this.activeItem.label, this.type, this.collectionType)
+      .pipe(filter((button: Button) => {
+        if (['list', 'collections'].includes(type)) {
+          return !buttonClicked && button.displayOnSelect ? false : true;
+        } else {
+          return true;
+        }
+      }),
+        takeUntil(this.onDestroy$))
+        .subscribe(buttons => {
+          this.buttons.push(buttons);
+        })
     );
   }
 
