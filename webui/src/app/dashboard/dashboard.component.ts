@@ -67,11 +67,11 @@ export class DashboardComponent implements DoCheck {
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(columns => this.columns = columns)
       );
-      if (this.activeItem.path) {
+      if (this.path) {
         this.subscriptions.add(
-          this.apiService.getList(this.activeItem.path)
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe(list => this.list = list)
+          this.apiService.getList(this.path)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(list => this.list = list)
         );
       }
     }

@@ -21,6 +21,8 @@ export interface List {
   type?: string;
   parent?: Parent;
   hasBadge?: boolean;
+  filter?: string;
+  options?: any[];
 }
 
 export interface Parent {

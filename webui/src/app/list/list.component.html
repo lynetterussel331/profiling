@@ -1,10 +1,33 @@
 <app-buttons [activeItem]="activeItem" [type]="type" [collectionType]="collectionType" [uuid]="uuid" (reloadList)="reloadList()" #buttonComponent></app-buttons>
-<p-table [value]="list" [paginator]="true" [rows]="rows" [(selection)]="selectedRow" styleClass="ui-table-generic" [rowHover]="true">
+<p-table #dataTable [value]="list" [paginator]="true" [rows]="rows" [(selection)]="selectedRow" styleClass="ui-table-generic" [rowHover]="true"
+    [globalFilterFields]="globalFilterFields">
+    <ng-template *ngIf="type === 'list'" pTemplate="caption">
+        {{ activeItem.label }} List
+        <div *ngIf="globalFilterFields" class="ui-table-globalfilter-container">
+            <input pInputType type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')" placeholder="Global Search">
+        </div>
+    </ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th *ngFor="let col of columns" [pSortableColumn]="col.name !== 'uuid' ? col.name : ''">
                 {{ col.caption }}
                 <p-sortIcon *ngIf="col.name !== 'uuid'" [field]="col.name"></p-sortIcon>
+            </th>
+        </tr>
+        <tr>
+            <th *ngFor="let col of columns">
+                <p-dropdown *ngIf="col.filter === 'dropdown'" [options]="distinctValuesMap[col.name]" (onChange)="dataTable.filter($event.value, col.name, 'equals')" 
+                    styleClass="ui-column-filter" [placeholder]="'Select a ' + col.caption" [showClear]="true">
+                    <ng-template let-option pTemplate="item">
+                        <span [class]="'generic-badge value-' + option.value">{{option.value}}</span>
+                    </ng-template>
+                </p-dropdown>
+                <p-multiSelect *ngIf="col.filter === 'multiSelect'" [options]="distinctValuesMap[col.name]" (onChange)="dataTable.filter($event.value, col.name, 'in')"
+                    placeholder="All" styleClass="ui-column-filter">
+                    <ng-template let-option pTemplate="item">
+                        <span>{{option.label}}</span>
+                    </ng-template>
+                </p-multiSelect>
             </th>
         </tr>
     </ng-template>

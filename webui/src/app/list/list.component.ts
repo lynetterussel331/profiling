@@ -1,20 +1,21 @@
-import { Component, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, DoCheck, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { MenuConfig, List } from '../service/ui-data-config.service';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnDestroy {
+export class ListComponent implements DoCheck, OnDestroy {
 
   @Input() activeItem: MenuConfig;
   @Input() type: string;
   @Input() collectionType: string;
-  @Input() list: any;
   @Input() columns: List[];
+  @Input() list: any;
   @Output() reloadListDashboard = new EventEmitter<any>();
 
   rows: number;
@@ -24,10 +25,28 @@ export class ListComponent implements OnDestroy {
   subscriptions = new Subscription();
   onDestroy$ = new Subject();
 
+  executed: boolean;
+  distinctValuesMap = new Map<string, any[]>();
+  globalFilterFields: any[];
+
+  nonFilterFieldTypes: any[];
+
   constructor(
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
   ) {
     this.rows = 10;
+    this.nonFilterFieldTypes = ['radiobutton'];
+  }
+
+  ngDoCheck() {
+    if (!this.executed && this.columns) {
+      this.globalFilterFields = this.columns.filter(col => !this.nonFilterFieldTypes.includes(col.type)).map(col => col.name);
+      const filteredCols = this.columns.filter(col => col.filter).map(col => col.name);
+      this.apiService.getDistinctValuesMap(this.activeItem.path, filteredCols)
+        .subscribe(data => this.distinctValuesMap = data);
+      this.executed = true;
+    }
   }
 
   redirectToDetails(selectedUUID) {
