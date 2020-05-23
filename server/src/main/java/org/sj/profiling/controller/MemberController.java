@@ -1,11 +1,17 @@
 package org.sj.profiling.controller;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.sj.profiling.model.Member;
 import org.sj.profiling.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -51,6 +57,13 @@ public class MemberController {
     @RequestMapping(value = "members/{UUID}", method = RequestMethod.DELETE)
     public void delete(@PathVariable UUID UUID) {
         memberService.deleteMember(UUID);
+    }
+
+    @RequestMapping(value = "members/distinct", method = RequestMethod.GET)
+    public List<?> getDistinctValues(@RequestParam String column) {
+        List<?> distinctValues = memberService.getDistinctValues(column);
+        log.info("distinctValues: " + distinctValues);
+        return distinctValues;
     }
 
 }

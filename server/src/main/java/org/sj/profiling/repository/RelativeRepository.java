@@ -2,9 +2,12 @@ package org.sj.profiling.repository;
 
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.sj.profiling.exception.ResourceNotFoundException;
 import org.sj.profiling.model.Relative;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
@@ -15,6 +18,9 @@ public class RelativeRepository {
 
     @Autowired @Lazy
     private RelativeJpaRepository jpaRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     public List<Relative> list() {
         return jpaRepository.findAll();
@@ -45,5 +51,14 @@ public class RelativeRepository {
         jpaRepository.delete(existingData);
     }
 
+    public List<?> findDistinctValuesByColumnName(String columnName) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<?> criteriaQuery = criteriaBuilder.createQuery(Relative.class);
+
+        Root<?> root = criteriaQuery.from(Relative.class);
+        criteriaQuery.select(root.get(columnName)).distinct(true);
+
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
 
 }

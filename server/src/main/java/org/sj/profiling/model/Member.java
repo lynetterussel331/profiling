@@ -1,9 +1,17 @@
 package org.sj.profiling.model;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.*;
-import lombok.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,13 +32,13 @@ public class Member {
     @Column(name = "UUID", updatable = false, nullable = false)
     private UUID UUID;
 
-    @Column(name = "FIRSTNAME", length = 30)
+    @Column(name = "FIRST_NAME", length = 30)
     private String firstName;
 
-    @Column(name = "MIDDLENAME", length = 30)
+    @Column(name = "MIDDLE_NAME", length = 30)
     private String middleName;
 
-    @Column(name = "LASTNAME", length = 30)
+    @Column(name = "LAST_NAME", length = 30)
     private String lastName;
 
     @Column(name = "BIRTHDATE")
@@ -42,7 +50,7 @@ public class Member {
     @Column(name = "GENDER", length = 10)
     private String gender;
 
-    @Column(name = "BRGY_REGISTERED_VOTER")
+    @Column(name = "BRGY_REG_VOTER")
     private boolean brgyRegVoter;
 
     @Column(name = "OCCUPATION", length = 30)

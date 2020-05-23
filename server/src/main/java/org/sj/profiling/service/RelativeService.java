@@ -40,4 +40,8 @@ public class RelativeService {
         relativeRepository.delete(UUID);
     }
 
+    public List<?> getDistinctValues(String columnName) {
+        return relativeRepository.findDistinctValuesByColumnName(columnName);
+    }
+
 }

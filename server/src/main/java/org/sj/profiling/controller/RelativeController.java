@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -54,6 +55,13 @@ public class RelativeController {
     @RequestMapping(value = "relatives/{UUID}", method = RequestMethod.DELETE)
     public void delete(@PathVariable UUID UUID) {
         relativeService.deleteRelative(UUID);
+    }
+
+    @RequestMapping(value = "relatives/distinct", method = RequestMethod.GET)
+    public List<?> getDistinctValues(@RequestParam String column) {
+        List<?> distinctValues = relativeService.getDistinctValues(column);
+        log.info("distinctValues: " + distinctValues);
+        return distinctValues;
     }
 
 }
