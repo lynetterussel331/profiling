@@ -1,6 +1,8 @@
 package org.sj.profiling.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.sj.profiling.model.Member;
@@ -64,6 +66,17 @@ public class MemberController {
         List<?> distinctValues = memberService.getDistinctValues(column);
         log.info("distinctValues: " + distinctValues);
         return distinctValues;
+    }
+
+    @RequestMapping(value = "members/distincts", method = RequestMethod.GET)
+    public Map<String, List<?>> getDistinctValues(@RequestParam List<String> column) {
+        Map<String, List<?>> distinctValuesMap = new HashMap<>();
+        column.forEach( it ->
+            distinctValuesMap.put(it, memberService.getDistinctValues(it))
+        );
+
+        log.info("distinctValuesMap: " + distinctValuesMap);
+        return distinctValuesMap;
     }
 
 }

@@ -1,12 +1,16 @@
 package org.sj.profiling.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.sj.profiling.model.Relative;
 import org.sj.profiling.repository.RelativeRepository;
+import org.sj.profiling.utils.StringUtils.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class RelativeService {
 
@@ -41,7 +45,13 @@ public class RelativeService {
     }
 
     public List<?> getDistinctValues(String columnName) {
-        return relativeRepository.findDistinctValuesByColumnName(columnName);
+        List<Filter> formattedList = new ArrayList<>();
+        List<?> list = relativeRepository.findDistinctValuesByColumnName(columnName);
+        list.forEach( it -> {
+            Filter filter = new Filter(it, it);
+            formattedList.add(filter);
+        });
+        return formattedList;
     }
 
 }

@@ -1,10 +1,12 @@
 package org.sj.profiling.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.sj.profiling.model.Member;
 import org.sj.profiling.repository.MemberRepository;
+import org.sj.profiling.utils.StringUtils.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +45,13 @@ public class MemberService {
     }
 
     public List<?> getDistinctValues(String columnName) {
-        return memberRepository.findDistinctValuesByColumnName(columnName);
+        List<Filter> formattedList = new ArrayList<>();
+        List<?> list = memberRepository.findDistinctValuesByColumnName(columnName);
+        list.forEach( it -> {
+            Filter filter = new Filter(it, it);
+            formattedList.add(filter);
+        });
+        return formattedList;
     }
 
 }

@@ -1,10 +1,12 @@
 package org.sj.profiling.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import org.sj.profiling.exception.ResourceNotFoundException;
 import org.sj.profiling.model.Relative;
@@ -56,7 +58,11 @@ public class RelativeRepository {
         CriteriaQuery<?> criteriaQuery = criteriaBuilder.createQuery(Relative.class);
 
         Root<?> root = criteriaQuery.from(Relative.class);
-        criteriaQuery.select(root.get(columnName)).distinct(true);
+        criteriaQuery.select( root.get(columnName) ).distinct(true);
+
+        List<Order> orderList = new ArrayList();
+        orderList.add(criteriaBuilder.asc(root.get(columnName)));
+        criteriaQuery.orderBy(orderList);
 
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
