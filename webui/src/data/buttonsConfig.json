@@ -1,5 +1,7 @@
 {
     "buttons": [
+        { "label": "New", "action": "post" },
+        { "label": "Edit", "action": "put" },
         { "label": "Delete", "action": "delete", "confirmMessage": "Are you sure you want to delete this record?" }
     ]
 }

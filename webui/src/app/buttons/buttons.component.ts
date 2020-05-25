@@ -16,11 +16,12 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   @Input() type: string;
   @Input() collectionType: string;
   @Input() uuid: string;
-  buttons: Button[] = [];
 
   @Output() reloadList = new EventEmitter<any>();
 
+  buttons: Button[] = [];
   executed: boolean;
+  displayForm: boolean;
 
   private subscriptions = new Subscription();
   private onDestroy$ = new Subject();
@@ -66,6 +67,8 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
       .subscribe(config => {
         if (config.confirmMessage) {
           this.confirm(config);
+        } else {
+          this.displayForm = true;
         }
       })
     );

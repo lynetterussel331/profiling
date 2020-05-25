@@ -19,6 +19,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
 
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -27,10 +29,11 @@ import { ListComponent } from './list/list.component';
 import { DetailsComponent } from './details/details.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { CollectionsComponent } from './collections/collections.component';
-import { FormComponent } from './form/form.component';
+import { DynamicFormsPrimeNGUIModule } from '@ng-dynamic-forms/ui-primeng';
 
 import { EncrDecrService } from './service/encr-decr.service';
 import { ConfirmationService } from 'primeng/api';
+import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,7 @@ import { ConfirmationService } from 'primeng/api';
     LoginComponent,
     HomeComponent,
     ListComponent,
-    FormComponent
+    DynamicFormComponent
   ],
   imports: [
     AppRoutes,
@@ -52,8 +55,11 @@ import { ConfirmationService } from 'primeng/api';
     ButtonModule,
     ConfirmDialogModule,
     DropdownModule,
+    DynamicFormsPrimeNGUIModule,
     FormsModule,
     HttpClientModule,
+    MessageModule,
+    MessagesModule,
     MultiSelectModule,
     PanelModule,
     RadioButtonModule,

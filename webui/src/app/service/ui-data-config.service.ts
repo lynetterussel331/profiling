@@ -102,7 +102,7 @@ export class UiDataConfigService {
       .pipe(map(config => config.collections));
   }
 
-  getGlobalButtonConfig(buttonLabel: string): Observable<any> {
+  getGlobalButtonConfig(buttonLabel: string): Observable<ButtonConfig> {
     return this.httpClient.get<any>(`data/buttonsConfig.json`, { responseType: 'json' })
     .pipe(map(config => config.buttons),
       flatMap(array => array),

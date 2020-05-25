@@ -1,2 +1,3 @@
 <p-button *ngFor="let button of buttons" [label]="button.label" (click)="clickButton(button)"></p-button>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<app-dynamic-form *ngIf="displayForm" [displayForm]="displayForm"></app-dynamic-form>

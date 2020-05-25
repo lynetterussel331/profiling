@@ -1,0 +1,8 @@
+<p-sidebar [(visible)]="displayForm">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+
+        <dynamic-primeng-form [group]="formGroup" [model]="formModel"></dynamic-primeng-form>
+        <button type="submit" [disabled]="!formGroup.valid">Submit</button>
+
+    </form>
+</p-sidebar>
