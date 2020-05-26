@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { EncrDecrService } from '../service/encr-decr.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +14,12 @@ export class LoginComponent {
   password: string;
   key: string;
 
+  messages = [];
+
   constructor(
     private router: Router,
-    private EncrDecr: EncrDecrService
+    private EncrDecr: EncrDecrService,
+    private messageService: MessageService
   ) {
     this.key = 'y7Hfd6Jt9L3b7Cs4xMgTr49vC4h8l3k0==';
   }
@@ -26,6 +30,9 @@ export class LoginComponent {
     if (this.EncrDecr.set(this.key, this.username) === encrUsername &&
           this.EncrDecr.set(this.key, this.password) === encrPassword) {
       this.router.navigateByUrl('home');
+    } else {
+      this.messageService.clear();
+      this.messageService.add({key: 'errorMessage', severity: 'error', summary: 'Error Message', detail: 'Login failed!'});
     }
   }
 

@@ -21,6 +21,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
+import { ToastModule } from 'primeng/toast';
 
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -32,7 +33,7 @@ import { CollectionsComponent } from './collections/collections.component';
 import { DynamicFormsPrimeNGUIModule } from '@ng-dynamic-forms/ui-primeng';
 
 import { EncrDecrService } from './service/encr-decr.service';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 
 @NgModule({
@@ -67,9 +68,10 @@ import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
     SidebarModule,
     TableModule,
     TabMenuModule,
-    TabViewModule
+    TabViewModule,
+    ToastModule
   ],
-  providers: [ ConfirmationService, EncrDecrService ],
+  providers: [ ConfirmationService, EncrDecrService, MessageService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
