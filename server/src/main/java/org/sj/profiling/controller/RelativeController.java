@@ -30,17 +30,19 @@ public class RelativeController {
         return relativeList;
     }
 
-//    @RequestMapping(value = "relatives", method = RequestMethod.POST)
-//    public Relative create(@RequestBody Relative relative) {
-//        return relativeService.createRelative(relative);
-//    }
-
     @RequestMapping(value = "relatives", method = RequestMethod.POST)
-    public List<Relative> createList(@RequestBody List<Relative> relativeList) {
-        List<Relative> createdRelatives = relativeService.createRelatives(relativeList);
-        log.info(createdRelatives.toString());
-        return createdRelatives;
+    public Relative create(@RequestBody Relative relative) {
+        Relative createdRelative = relativeService.createRelative(relative);
+        log.info(createdRelative.toString());
+        return createdRelative;
     }
+
+//    @RequestMapping(value = "relatives", method = RequestMethod.POST)
+//    public List<Relative> createList(@RequestBody List<Relative> relativeList) {
+//        List<Relative> createdRelatives = relativeService.createRelatives(relativeList);
+//        log.info(createdRelatives.toString());
+//        return createdRelatives;
+//    }
 
     @RequestMapping(value = "relatives/{UUID}", method = RequestMethod.GET)
     public Relative get(@PathVariable UUID UUID) {

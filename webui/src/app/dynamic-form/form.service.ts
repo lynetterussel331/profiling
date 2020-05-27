@@ -12,8 +12,8 @@ export class FormService {
     private httpClient: HttpClient
   ) { }
 
-  getSampleFormModel(): Observable<any> {
-    return this.httpClient.get<any>('data/sample-form-model.json', { responseType: 'json' });
+  getFormModel(item: string): Observable<any> {
+    return this.httpClient.get<any>(`data/${item}/config/formModel.json`, { responseType: 'json' });
   }
 
 }

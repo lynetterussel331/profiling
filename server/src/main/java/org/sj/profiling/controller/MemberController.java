@@ -30,19 +30,20 @@ public class MemberController {
         return memberList;
     }
 
-//    @RequestMapping(value = "members", method = RequestMethod.POST)
-//    public Member create(@RequestBody Member member) {
-//        Member member = memberService.createMember(member);
-//        LogUtils.print(member);
-//        return member;
-//    }
-
     @RequestMapping(value = "members", method = RequestMethod.POST)
-    public List<Member> createList(@RequestBody List<Member> memberList) {
-        List<Member> createdMembers = memberService.createMembers(memberList);
-        log.info(createdMembers.toString());
-        return createdMembers;
+    public Member create(@RequestBody Member member) {
+        log.info(member.toString());
+        Member createdMember = memberService.createMember(member);
+        log.info(createdMember.toString());
+        return createdMember;
     }
+
+//    @RequestMapping(value = "members", method = RequestMethod.POST)
+//    public List<Member> createList(@RequestBody List<Member> memberList) {
+//        List<Member> createdMembers = memberService.createMembers(memberList);
+//        log.info(createdMembers.toString());
+//        return createdMembers;
+//    }
 
     @RequestMapping(value = "members/{UUID}", method = RequestMethod.GET)
     public Member get(@PathVariable UUID UUID) {

@@ -36,14 +36,28 @@ export class ApiService {
       url += `/${path}`;
     }
 
-    if (config.action === 'create') {
-      // return this.http.post<any>(url);
-    } else if (config.action === 'update') {
-      // return this.http.put<any>(url);
-    } else if (config.action === 'delete') {
+    if (config.action === 'delete') {
       return this.http.delete<any>(url);
     } else if (config.action === 'list') {
       return this.http.get<any>(url);
     }
   }
+
+  requestWithBody(item: string, config: ButtonConfig, body: any, uuid?: string): Observable<any> {
+    console.log('item', item, 'config', config, 'body', body);
+    let url = `/api/${item}`;
+
+    if (uuid) {
+      url += `/${uuid}`;
+    }
+
+    if (config.action === 'create') {
+      console.log('create', url);
+      return this.http.post<any>(url, body);
+    } else if (config.action === 'update') {
+      console.log('update');
+      return this.http.put<any>(url, body);
+    }
+  }
+
 }

@@ -19,6 +19,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
 
   @Output() reloadList = new EventEmitter<any>();
 
+  buttonConfig: ButtonConfig;
   buttons: Button[] = [];
   executed: boolean;
   displayForm: boolean;
@@ -65,6 +66,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
     this.subscriptions.add(
       this.uiConfigService.getGlobalButtonConfig(button.label)
       .subscribe(config => {
+        this.buttonConfig = config;
         if (config.confirmMessage) {
           this.confirm(config);
         } else {
