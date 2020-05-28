@@ -29,16 +29,16 @@ export class ApiService {
     return this.http.get<any>(url, { params });
   }
 
-  request(item: string, config: ButtonConfig, uuid: string, path?: string): Observable<any> {
+  request(item: string, action: string, uuid: string, path?: string): Observable<any> {
     let url = `/api/${item}/${uuid}`;
 
     if (path) {
       url += `/${path}`;
     }
 
-    if (config.action === 'delete') {
+    if (action === 'delete') {
       return this.http.delete<any>(url);
-    } else if (config.action === 'list') {
+    } else if (action === 'list') {
       return this.http.get<any>(url);
     }
   }

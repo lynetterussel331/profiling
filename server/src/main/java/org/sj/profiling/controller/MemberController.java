@@ -32,7 +32,6 @@ public class MemberController {
 
     @RequestMapping(value = "members", method = RequestMethod.POST)
     public Member create(@RequestBody Member member) {
-        log.info(member.toString());
         Member createdMember = memberService.createMember(member);
         log.info(createdMember.toString());
         return createdMember;

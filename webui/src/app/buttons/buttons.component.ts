@@ -16,6 +16,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   @Input() type: string;
   @Input() collectionType: string;
   @Input() uuid: string;
+  @Input() formData: any;
 
   @Output() reloadList = new EventEmitter<any>();
 
@@ -71,8 +72,19 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
           this.confirm(config);
         } else {
           this.displayForm = true;
+          if (config.action === 'update') {
+            this.loadFormContents();
+          }
         }
       })
+    );
+  }
+
+  loadFormContents() {
+    console.log('uuid', this.uuid);
+    this.subscriptions.add(
+      this.apiService.request(this.activeItem.path, 'list', this.uuid)
+        .subscribe(data => this.formData = data)
     );
   }
 
@@ -87,7 +99,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
       message: config.confirmMessage,
       accept: () => {
         this.subscriptions.add(
-          this.apiService.request(this.activeItem.path, config, this.uuid).subscribe()
+          this.apiService.request(this.activeItem.path, config.action, this.uuid).subscribe()
         );
         this.reloadList.emit();
       }
