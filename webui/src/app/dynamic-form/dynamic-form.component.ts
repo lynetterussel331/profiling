@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormService } from './form.service';
 import { DynamicFormService, DynamicFormModel } from '@ng-dynamic-forms/core';
@@ -18,6 +18,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() buttonConfig: ButtonConfig;
   @Input() formData: any;
   @Input() uuid: string;
+
+  @Output() sendMessage = new EventEmitter<any>();
 
   formModel: DynamicFormModel;
   formGroup: FormGroup;
@@ -53,6 +55,14 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   onSubmit() {
     const formGroupRawValue = this.formGroup.getRawValue();
     this.apiService.requestWithBody(this.activeItem.path, this.buttonConfig, formGroupRawValue, this.uuid).subscribe();
+    this.displayForm = false;
+    let successMessage;
+    if (this.buttonConfig.action === 'update') {
+      successMessage = 'Item updated successfully!';
+    } else if (this.buttonConfig.action === 'create') {
+      successMessage = 'Item created successfully!';
+    }
+    this.sendMessage.emit(successMessage);
   }
 
   onHide() {

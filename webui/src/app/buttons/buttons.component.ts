@@ -4,6 +4,7 @@ import { Subject, Subscription } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import { ConfirmationService } from 'primeng/api';
 import { ApiService } from '../service/api.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-buttons',
@@ -31,7 +32,8 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   constructor(
     private uiConfigService: UiDataConfigService,
     private confirmationService: ConfirmationService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private messageService: MessageService
   ) { }
 
   ngDoCheck() {
@@ -88,12 +90,6 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-    this.subscriptions.unsubscribe();
-  }
-
   confirm(config: ButtonConfig) {
     this.confirmationService.confirm({
       message: config.confirmMessage,
@@ -104,6 +100,16 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
         this.reloadList.emit();
       }
     });
+  }
+
+  sendMessage(message) {
+    this.messageService.add({key: 'message', severity: 'success', summary: 'Successful', detail: message});
+  }
+
+  ngOnDestroy() {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+    this.subscriptions.unsubscribe();
   }
 
 }

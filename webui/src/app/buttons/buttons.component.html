@@ -1,3 +1,5 @@
 <p-button *ngFor="let button of buttons" [label]="button.label" (click)="clickButton(button)"></p-button>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
-<app-dynamic-form [displayForm]="displayForm" [formData]="formData" [activeItem]="activeItem" [buttonConfig]="buttonConfig" [uuid]="uuid"></app-dynamic-form>
+<p-toast key="message" position="center"></p-toast>
+<app-dynamic-form [displayForm]="displayForm" [formData]="formData" [activeItem]="activeItem" [buttonConfig]="buttonConfig"
+    [uuid]="uuid" (sendMessage)="sendMessage($event)"></app-dynamic-form>
