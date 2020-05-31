@@ -4,6 +4,7 @@ import { FormService } from './form.service';
 import { DynamicFormService, DynamicFormModel } from '@ng-dynamic-forms/core';
 import { MenuConfig, ButtonConfig } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -16,6 +17,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() displayForm: boolean;
   @Input() buttonConfig: ButtonConfig;
   @Input() formData: any;
+  @Input() uuid: string;
 
   formModel: DynamicFormModel;
   formGroup: FormGroup;
@@ -38,24 +40,23 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.formData) {
-      console.log('formGroup', this.formGroup);
-      console.log('formData', this.formData);
       Object.keys(this.formGroup.value).forEach(field => {
-        this.formGroup.controls[field].setValue(this.formData[field]);
+        let value = this.formData[field];
+        if (typeof value !== 'boolean' && moment(new Date(value),  'YYYY-MM-DD').isValid()) {
+          value = new Date(value);
+        }
+        this.formGroup.controls[field].setValue(value);
       });
-      console.log('formGroup', this.formGroup);
     }
   }
 
   onSubmit() {
     const formGroupRawValue = this.formGroup.getRawValue();
-    console.log('submitted', formGroupRawValue);
-    this.apiService.requestWithBody(this.activeItem.path, this.buttonConfig, formGroupRawValue).subscribe();
+    this.apiService.requestWithBody(this.activeItem.path, this.buttonConfig, formGroupRawValue, this.uuid).subscribe();
   }
 
   onHide() {
     this.displayForm = false;
-    console.log('displayForm', this.displayForm);
   }
 
 }
