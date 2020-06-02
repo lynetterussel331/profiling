@@ -1,5 +1,7 @@
 <p-button *ngFor="let button of buttons" [label]="button.label" (click)="clickButton(button)"></p-button>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast key="message" position="center"></p-toast>
-<app-form [displayForm]="displayForm" [formData]="formData" [activeItem]="activeItem" [buttonConfig]="buttonConfig"
-    [uuid]="uuid" (sendMessage)="sendMessage($event)"></app-form>
+<p-sidebar [(visible)]="displayForm" [closeOnEscape]=false [dismissible]=false (onHide)="onHide()">
+    <app-form [formData]="formData" [activeItem]="activeItem" [buttonConfig]="buttonConfig"
+        [uuid]="uuid" (sendMessage)="sendMessage($event)"></app-form>
+</p-sidebar>

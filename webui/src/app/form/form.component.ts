@@ -1,20 +1,21 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormService } from './form.service';
 import { DynamicFormService, DynamicFormModel } from '@ng-dynamic-forms/core';
 import { MenuConfig, ButtonConfig } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
 import * as moment from 'moment';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit, OnChanges {
+export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() activeItem: MenuConfig;
-  @Input() displayForm: boolean;
   @Input() buttonConfig: ButtonConfig;
   @Input() formData: any;
   @Input() uuid: string;
@@ -24,20 +25,23 @@ export class FormComponent implements OnInit, OnChanges {
   formModel: DynamicFormModel;
   formGroup: FormGroup;
 
+  private subscriptions = new Subscription();
+  private onDestroy$ = new Subject();
+
   constructor(
     private formService: FormService,
     private dynamicFormService: DynamicFormService,
     private apiService: ApiService) { }
 
   ngOnInit() {
-    this.formService.getFormModel(this.activeItem.label)
-      .subscribe(formModelJSON => {
-
-        this.formModel = this.dynamicFormService.fromJSON(formModelJSON);
-        this.formGroup = this.dynamicFormService.createFormGroup(this.formModel);
-
-      });
-
+    this.subscriptions.add(
+      this.formService.getFormModel(this.activeItem.label)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(formModelJSON => {
+          this.formModel = this.dynamicFormService.fromJSON(formModelJSON);
+          this.formGroup = this.dynamicFormService.createFormGroup(this.formModel);
+      })
+    );
   }
 
   ngOnChanges() {
@@ -54,8 +58,9 @@ export class FormComponent implements OnInit, OnChanges {
 
   onSubmit() {
     const formGroupRawValue = this.formGroup.getRawValue();
-    this.apiService.requestWithBody(this.activeItem.path, this.buttonConfig, formGroupRawValue, this.uuid).subscribe();
-    this.displayForm = false;
+    this.subscriptions.add(
+      this.apiService.requestWithBody(this.activeItem.path, this.buttonConfig, formGroupRawValue, this.uuid)
+        .pipe(takeUntil(this.onDestroy$)).subscribe());
     let successMessage;
     if (this.buttonConfig.action === 'update') {
       successMessage = 'Item updated successfully!';
@@ -65,8 +70,10 @@ export class FormComponent implements OnInit, OnChanges {
     this.sendMessage.emit(successMessage);
   }
 
-  onHide() {
-    this.displayForm = false;
+  ngOnDestroy() {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+    this.subscriptions.unsubscribe();
   }
 
 }

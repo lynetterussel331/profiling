@@ -83,7 +83,6 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   }
 
   loadFormContents() {
-    console.log('uuid', this.uuid);
     this.subscriptions.add(
       this.apiService.request(this.activeItem.path, 'list', this.uuid)
         .subscribe(data => this.formData = data)
@@ -100,6 +99,10 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
         this.reloadList.emit();
       }
     });
+  }
+
+  onHide() {
+    this.displayForm = false;
   }
 
   sendMessage(message) {
