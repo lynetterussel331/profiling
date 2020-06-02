@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormService } from './form.service';
 import { DynamicFormService, DynamicFormModel } from '@ng-dynamic-forms/core';
@@ -17,11 +17,11 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() activeItem: MenuConfig;
   @Input() buttonConfig: ButtonConfig;
-  @Input() formData: any;
   @Input() uuid: string;
 
   @Output() sendMessage = new EventEmitter<any>();
 
+  formData: any;
   formModel: DynamicFormModel;
   formGroup: FormGroup;
 
@@ -44,15 +44,24 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  ngOnChanges() {
-    if (this.formData) {
-      Object.keys(this.formGroup.value).forEach(field => {
-        let value = this.formData[field];
-        if (typeof value !== 'boolean' && moment(new Date(value),  'YYYY-MM-DD').isValid()) {
-          value = new Date(value);
-        }
-        this.formGroup.controls[field].setValue(value);
-      });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.buttonConfig && changes.buttonConfig.currentValue.action === 'update') {
+
+      this.subscriptions.add(
+        this.apiService.request(this.activeItem.path, 'list', this.uuid)
+          .subscribe(data => {
+            this.formData = data;
+          }, (err) => console.log(err),
+          () => {
+            Object.keys(this.formGroup.value).forEach(field => {
+              let value = this.formData[field];
+              if (typeof value !== 'boolean' && moment(new Date(value),  'YYYY-MM-DD').isValid()) {
+                value = new Date(value);
+              }
+              this.formGroup.controls[field].setValue(value);
+            });
+          })
+      );
     }
   }
 
