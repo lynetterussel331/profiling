@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter, S
 import { FormGroup } from '@angular/forms';
 import { FormService } from './form.service';
 import { DynamicFormService, DynamicFormModel } from '@ng-dynamic-forms/core';
-import { MenuConfig, ButtonConfig } from '../service/ui-data-config.service';
+import { MenuConfig, ButtonConfig, UiDataConfigService } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
 import * as moment from 'moment';
 import { Subscription, Subject } from 'rxjs';
@@ -33,7 +33,8 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private formService: FormService,
     private dynamicFormService: DynamicFormService,
-    private apiService: ApiService) { }
+    private apiService: ApiService,
+    private uiConfigService: UiDataConfigService) { }
 
   ngOnInit() {
     this.subscriptions.add(
@@ -49,7 +50,10 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.buttonConfig && changes.buttonConfig.currentValue) {
 
-      this.formHeader = changes.buttonConfig.currentValue.formSettings.caption + ' ' + this.activeItem.label;
+      this.uiConfigService.getItemLabel(this.activeItem.label).subscribe( data => {
+        const itemName = data.single;
+        this.formHeader = changes.buttonConfig.currentValue.formSettings.caption + ' ' + itemName;
+      });
 
       if (changes.buttonConfig.currentValue.action === 'update') {
 

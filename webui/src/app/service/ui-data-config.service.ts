@@ -49,6 +49,11 @@ export interface Collection {
   fields: List[];
 }
 
+export interface ItemLabel {
+  label: string;
+  single: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -108,6 +113,13 @@ export class UiDataConfigService {
     .pipe(map(config => config.buttons),
       flatMap(array => array),
         filter((config: ButtonConfig) => config.label === buttonLabel));
+  }
+
+  getItemLabel(item: string): Observable<ItemLabel> {
+    return this.httpClient.get<any>(`data/itemLabels.json`, { responseType: 'json' })
+    .pipe(map(config => config.items),
+      flatMap(array => array),
+        filter((rec: ItemLabel) => rec.label === item));
   }
 
 }
