@@ -25,6 +25,8 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   formModel: DynamicFormModel;
   formGroup: FormGroup;
 
+  formHeader: string;
+
   private subscriptions = new Subscription();
   private onDestroy$ = new Subject();
 
@@ -45,9 +47,12 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.buttonConfig) {
+    if (changes.buttonConfig && changes.buttonConfig.currentValue) {
+
+      this.formHeader = changes.buttonConfig.currentValue.formSettings.caption + ' ' + this.activeItem.label;
+
       if (changes.buttonConfig.currentValue.action === 'update') {
-  
+
         this.subscriptions.add(
           this.apiService.request(this.activeItem.path, 'list', this.uuid)
             .subscribe(data => {

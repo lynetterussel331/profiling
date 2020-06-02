@@ -13,6 +13,7 @@ export interface ButtonConfig {
   label: string;
   action: string;
   confirmMessage?: string;
+  formSettings: { caption: string };
 }
 
 export interface List {
