@@ -4,7 +4,7 @@
 
     <dynamic-primeng-form [group]="formGroup" [model]="formModel"></dynamic-primeng-form>
     <div class="form-row">
-        <button type="submit" [disabled]="formGroup && !formGroup.valid">Submit</button>
+        <p-button class="submit-button" label="Submit" [disabled]="formGroup && !formGroup.valid"></p-button>
     </div>
 
 </form>
