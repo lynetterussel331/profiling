@@ -34,7 +34,7 @@ import { DynamicFormsPrimeNGUIModule } from '@ng-dynamic-forms/ui-primeng';
 
 import { EncrDecrService } from './service/encr-decr.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
     LoginComponent,
     HomeComponent,
     ListComponent,
-    DynamicFormComponent
+    FormComponent
   ],
   imports: [
     AppRoutes,

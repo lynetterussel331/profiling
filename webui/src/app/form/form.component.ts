@@ -7,11 +7,11 @@ import { ApiService } from '../service/api.service';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-dynamic-form',
-  templateUrl: './dynamic-form.component.html',
-  styleUrls: ['./dynamic-form.component.css']
+  selector: 'app-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.css']
 })
-export class DynamicFormComponent implements OnInit, OnChanges {
+export class FormComponent implements OnInit, OnChanges {
 
   @Input() activeItem: MenuConfig;
   @Input() displayForm: boolean;
