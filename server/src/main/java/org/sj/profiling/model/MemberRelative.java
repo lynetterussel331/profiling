@@ -44,7 +44,7 @@ public class MemberRelative {
     @JoinColumn(name = "relative_uuid", referencedColumnName = "uuid", insertable = false, updatable = false)
     private Relative mainDetails;
 
-    @Column(name = "RELATIONSHIP", length = 20)
+    @Column(name = "RELATIONSHIP")
     private String relationship;
 
     @CreationTimestamp

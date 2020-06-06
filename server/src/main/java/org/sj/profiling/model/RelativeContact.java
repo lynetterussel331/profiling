@@ -34,10 +34,10 @@ public class RelativeContact {
     @Column(name = "RELATIVE_UUID", updatable = false, nullable = false)
     private UUID relativeUUID;
 
-    @Column(name = "TYPE", length = 20)
+    @Column(name = "TYPE")
     private String type;
 
-    @Column(name = "VALUE", length = 30)
+    @Column(name = "VALUE")
     private String value;
 
     @CreationTimestamp

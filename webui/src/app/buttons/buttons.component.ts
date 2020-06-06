@@ -95,6 +95,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   }
 
   sendMessage(message) {
+    this.displayForm = false;
     this.messageService.add({key: 'message', severity: 'success', summary: 'Successful', detail: message});
   }
 

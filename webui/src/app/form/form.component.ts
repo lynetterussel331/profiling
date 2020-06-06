@@ -65,7 +65,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
             () => {
               Object.keys(this.formGroup.value).forEach(field => {
                 let value = this.formData[field];
-                if (typeof value !== 'boolean' && moment(new Date(value),  'YYYY-MM-DD').isValid()) {
+                if (typeof value !== 'boolean' && moment(new Date(value), 'YYYY-MM-DD').isValid()) {
                   value = new Date(value);
                 }
                 this.formGroup.controls[field].setValue(value);
@@ -80,6 +80,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   onSubmit() {
     const formGroupRawValue = this.formGroup.getRawValue();
+    console.log('formGroupRawValue', formGroupRawValue);
     this.subscriptions.add(
       this.apiService.requestWithBody(this.activeItem.path, this.buttonConfig, formGroupRawValue, this.uuid)
         .pipe(takeUntil(this.onDestroy$)).subscribe());

@@ -32,31 +32,31 @@ public class Member {
     @Column(name = "UUID", updatable = false, nullable = false)
     private UUID UUID;
 
-    @Column(name = "FIRST_NAME", length = 30)
+    @Column(name = "FIRST_NAME")
     private String firstName;
 
-    @Column(name = "MIDDLE_NAME", length = 30)
+    @Column(name = "MIDDLE_NAME")
     private String middleName;
 
-    @Column(name = "LAST_NAME", length = 30)
+    @Column(name = "LAST_NAME")
     private String lastName;
 
     @Column(name = "BIRTHDATE")
     private LocalDate birthdate;
 
-    @Column(name = "BIRTHPLACE", length = 30)
+    @Column(name = "BIRTHPLACE")
     private String birthplace;
 
-    @Column(name = "GENDER", length = 10)
+    @Column(name = "GENDER")
     private String gender;
 
     @Column(name = "BRGY_REG_VOTER")
     private boolean brgyRegVoter;
 
-    @Column(name = "OCCUPATION", length = 30)
+    @Column(name = "OCCUPATION")
     private String occupation;
 
-    @Column(name = "ADDRESS", length = 50)
+    @Column(name = "ADDRESS")
     private String address;
 
     @CreationTimestamp
