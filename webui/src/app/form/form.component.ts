@@ -36,19 +36,19 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     private apiService: ApiService,
     private uiConfigService: UiDataConfigService) { }
 
-  ngOnInit() {
-    this.subscriptions.add(
-      this.formService.getFormModel(this.activeItem.label)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(formModelJSON => {
-          this.formModel = this.dynamicFormService.fromJSON(formModelJSON);
-          this.formGroup = this.dynamicFormService.createFormGroup(this.formModel);
-      })
-    );
-  }
+  ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.buttonConfig && changes.buttonConfig.currentValue) {
+
+      this.subscriptions.add(
+        this.formService.getFormModel(this.activeItem.label)
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(formModelJSON => {
+            this.formModel = this.dynamicFormService.fromJSON(formModelJSON);
+            this.formGroup = this.dynamicFormService.createFormGroup(this.formModel);
+        })
+      );
 
       this.uiConfigService.getItemLabel(this.activeItem.label).subscribe( data => {
         const itemName = data.single;
@@ -56,7 +56,6 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
       });
 
       if (changes.buttonConfig.currentValue.action === 'update') {
-
         this.subscriptions.add(
           this.apiService.request(this.activeItem.path, 'list', this.uuid)
             .subscribe(data => {
@@ -65,14 +64,14 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
             () => {
               Object.keys(this.formGroup.value).forEach(field => {
                 let value = this.formData[field];
-                if (typeof value !== 'boolean' && moment(new Date(value), 'YYYY-MM-DD').isValid()) {
+                if (typeof value !== 'boolean' && moment(value, 'YYYY-MM-DD', true).isValid()) {
                   value = new Date(value);
                 }
                 this.formGroup.controls[field].setValue(value);
               });
             })
         );
-      } else {
+      } else if (this.formGroup) {
         this.formGroup.reset();
       }
     }
