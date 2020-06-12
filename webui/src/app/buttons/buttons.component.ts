@@ -18,7 +18,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   @Input() collectionType: string;
   @Input() uuid: string;
 
-  @Output() reloadList = new EventEmitter<any>();
+  @Output() reloadList = new EventEmitter<string>();
 
   buttonConfig: ButtonConfig;
   buttons: Button[] = [];
@@ -85,7 +85,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
         this.subscriptions.add(
           this.apiService.request(this.activeItem.path, config.action, this.uuid).subscribe()
         );
-        this.reloadList.emit();
+        this.reloadList.emit(config.action);
       }
     });
   }

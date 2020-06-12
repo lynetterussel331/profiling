@@ -12,7 +12,7 @@ export class FormService {
   ) { }
 
   getFormModel(item: string): Observable<any> {
-    return this.httpClient.get<any>(`data/${item}/config/formModel.json`, { responseType: 'json' });
+    return this.httpClient.get<any>(`data/${item}/config/form-model.json`, { responseType: 'json' });
   }
 
 }

@@ -1,7 +1,7 @@
 <p-panel [header]="activeItem.label">
     <div class="ui-g">
         <div class="ui-g-6">
-            <app-buttons [activeItem]="activeItem" [type]="type"></app-buttons>
+            <app-buttons [activeItem]="activeItem" [type]="type" [uuid]="uuid" (reloadList)="reloadList($event)" ></app-buttons>
             <p-table [value]="details" styleClass="ui-table-generic" >
                 <ng-template pTemplate="body" let-data>
                     <tr>

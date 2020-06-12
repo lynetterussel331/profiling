@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UiDataConfigService, MenuConfig } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
 import { Subscription, Subject } from 'rxjs';
@@ -34,7 +34,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     private uiConfigService: UiDataConfigService,
     private apiService: ApiService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private router: Router
   ) {
     this.type = 'details';
     const url = this.utilsService.getUrlDetails(this.route);
@@ -44,7 +45,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(this.uiConfigService.getMenuConfigDetails(this.path)
-        .pipe(takeUntil(this.onDestroy$))
+      .pipe(takeUntil(this.onDestroy$))
         .subscribe(config => {
           this.activeItem = config;
           this.loadDetails(config.label);
@@ -59,6 +60,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.apiService.getDetails(this.path, this.uuid)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(data => {
+            this.details = [];
             details.forEach(field => {
               if (field.caption) {
                 this.details.push({ name: field.name, caption: field.caption, value: data[field.name], hasBadge: field.hasBadge });
@@ -68,6 +70,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
         );
       })
     );
+  }
+
+  reloadList(action?: string) {
+    console.log('Reload details...', action);
+    if (action === 'delete') {
+      this.router.navigate([this.activeItem.path]);
+    } else {
+      this.loadDetails(this.activeItem.label);
+    }
   }
 
   ngOnDestroy() {
