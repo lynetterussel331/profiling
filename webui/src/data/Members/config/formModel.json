@@ -42,6 +42,10 @@
         "required": true,
         "options": [
             {
+                "label": "",
+                "value": ""
+            },
+            {
                 "label": "FEMALE",
                 "value": "FEMALE"
             },

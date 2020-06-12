@@ -61,6 +61,7 @@ export class DashboardComponent implements DoCheck {
   }
 
   updateListContents() {
+    console.log('Updating list contents...');
     if (this.activeItem && this.activeItem.label) {
       this.subscriptions.add(
         this.uiConfigService.getListConfig(this.activeItem.label)
