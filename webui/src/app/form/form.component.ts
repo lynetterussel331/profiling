@@ -40,40 +40,49 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.buttonConfig && changes.buttonConfig.currentValue) {
+      this.loadFormGroup(changes);
+      this.loadLabel(changes);
+    }
+  }
 
+  loadLabel(changes: SimpleChanges) {
+    this.uiConfigService.getItemLabel(this.activeItem.label).subscribe( data => {
+      const itemName = data.single;
+      this.formHeader = changes.buttonConfig.currentValue.formSettings.caption + ' ' + itemName;
+    });
+  }
+
+  loadFormGroup(changes: SimpleChanges) {
+    this.subscriptions.add(
+      this.formService.getFormModel(this.activeItem.label)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(formModelJSON => {
+          this.formModel = this.dynamicFormService.fromJSON(formModelJSON);
+          this.formGroup = this.dynamicFormService.createFormGroup(this.formModel);
+      })
+    );
+    this.loadFormData(changes);
+  }
+
+  loadFormData(changes: SimpleChanges) {
+    if (changes.buttonConfig.currentValue.action === 'update') {
       this.subscriptions.add(
-        this.formService.getFormModel(this.activeItem.label)
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe(formModelJSON => {
-            this.formModel = this.dynamicFormService.fromJSON(formModelJSON);
-            this.formGroup = this.dynamicFormService.createFormGroup(this.formModel);
-        })
+        this.apiService.request(this.activeItem.path, 'list', this.uuid)
+          .subscribe(data => {
+            this.formData = data;
+          }, (err) => console.log(err),
+          () => {
+            Object.keys(this.formGroup.value).forEach(field => {
+              let value = this.formData[field];
+              if (typeof value !== 'boolean' && moment(value, 'YYYY-MM-DD', true).isValid()) {
+                value = new Date(value);
+              }
+              this.formGroup.controls[field].setValue(value);
+            });
+          })
       );
-
-      this.uiConfigService.getItemLabel(this.activeItem.label).subscribe( data => {
-        const itemName = data.single;
-        this.formHeader = changes.buttonConfig.currentValue.formSettings.caption + ' ' + itemName;
-      });
-
-      if (changes.buttonConfig.currentValue.action === 'update') {
-        this.subscriptions.add(
-          this.apiService.request(this.activeItem.path, 'list', this.uuid)
-            .subscribe(data => {
-              this.formData = data;
-            }, (err) => console.log(err),
-            () => {
-              Object.keys(this.formGroup.value).forEach(field => {
-                let value = this.formData[field];
-                if (typeof value !== 'boolean' && moment(value, 'YYYY-MM-DD', true).isValid()) {
-                  value = new Date(value);
-                }
-                this.formGroup.controls[field].setValue(value);
-              });
-            })
-        );
-      } else if (this.formGroup) {
-        this.formGroup.reset();
-      }
+    } else if (this.formGroup) {
+      this.formGroup.reset();
     }
   }
 
