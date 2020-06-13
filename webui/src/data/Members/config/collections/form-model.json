@@ -24,6 +24,18 @@
         "required": true
     },
     {
+        "type": "DATEPICKER",
+        "id": "birthdate",
+        "label": "Birthdate"
+    },
+    {
+        "type": "INPUT",
+        "id": "birthplace",
+        "label": "Birthplace",
+        "maxLength": 30,
+        "placeholder": "Birthplace"
+    },
+    {
         "type": "SELECT",
         "id": "gender",
         "label": "Gender",
@@ -33,6 +45,11 @@
             { "label": "FEMALE", "value": "FEMALE" },
             { "label": "MALE", "value": "MALE" }
         ]
+    },
+    {
+        "type": "SWITCH",
+        "id": "brgyRegVoter",
+        "label": "Brgy. Registered Voter"
     },
     {
         "type": "INPUT",
