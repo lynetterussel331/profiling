@@ -1,8 +1,9 @@
 import { Component, DoCheck, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { MenuConfig, List } from '../service/ui-data-config.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { ApiService } from '../service/api.service';
+import { UtilsService } from '../service/utils.service';
 
 @Component({
   selector: 'app-list',
@@ -16,7 +17,7 @@ export class ListComponent implements DoCheck, OnDestroy {
   @Input() collectionType: string;
   @Input() columns: List[];
   @Input() list: any;
-  @Output() reloadListDashboard = new EventEmitter<any>();
+  @Output() reloadListData = new EventEmitter<any>();
 
   rows: number;
   selectedRow: any;
@@ -33,7 +34,9 @@ export class ListComponent implements DoCheck, OnDestroy {
 
   constructor(
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private utilsService: UtilsService
   ) {
     this.rows = 10;
     this.nonFilterFieldTypes = ['radiobutton'];
@@ -47,6 +50,7 @@ export class ListComponent implements DoCheck, OnDestroy {
         .subscribe(data => this.distinctValuesMap = data);
       this.executed = true;
     }
+    this.uuid = this.utilsService.getUrlDetails(this.route).uuid;
   }
 
   redirectToDetails(selectedUUID) {
@@ -75,7 +79,8 @@ export class ListComponent implements DoCheck, OnDestroy {
   }
 
   reloadList() {
-    this.reloadListDashboard.emit();
+    console.log('Reloading list...');
+    this.reloadListData.emit();
   }
 
 }

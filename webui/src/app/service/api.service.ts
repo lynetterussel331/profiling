@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ButtonConfig } from './ui-data-config.service';
+import { ButtonConfig, MenuConfig, Collection } from './ui-data-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,11 +29,13 @@ export class ApiService {
     return this.http.get<any>(url, { params });
   }
 
-  request(item: string, action: string, uuid: string, path?: string): Observable<any> {
-    let url = `/api/${item}/${uuid}`;
-
-    if (path) {
-      url += `/${path}`;
+  request(activeItem: MenuConfig, action: string, uuid: string, collectionConfig?: Collection, collectionId?: string): Observable<any> {
+    console.log('request', activeItem, action, uuid, collectionConfig, collectionId);
+    let url;
+    if (collectionConfig) {
+      url = `/api/${collectionConfig.path}/${uuid}/${collectionId}`;
+    } else {
+      url = `/api/${activeItem.path}/${uuid}`;
     }
 
     if (action === 'delete') {
@@ -43,12 +45,17 @@ export class ApiService {
     }
   }
 
-  requestWithBody(item: string, config: ButtonConfig, body: any, uuid?: string): Observable<any> {
-    console.log('item', item, 'config', config, 'body', body);
-    let url = `/api/${item}`;
-
-    if (uuid) {
-      url += `/${uuid}`;
+  requestWithBody(activeItem: MenuConfig, config: ButtonConfig, body: any, uuid?: string, collectionConfig?: Collection,
+                  collectionId?: string): Observable<any> {
+    console.log('requestWithBody', activeItem, config, body, uuid, collectionConfig, collectionId);
+    let url;
+    if (collectionConfig) {
+      url = `/api/${collectionConfig.path}/${uuid || ''}`;
+      if (collectionId) {
+        url += `/${collectionId}`;
+      }
+    } else {
+      url = `/api/${activeItem.path}/${uuid || ''}`;
     }
 
     if (config.action === 'create') {
