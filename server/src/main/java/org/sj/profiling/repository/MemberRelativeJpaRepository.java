@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRelativeJpaRepository extends JpaRepository<MemberRelative, UUID> {
 
-    Optional<MemberRelative> findByUUID(UUID UUID);
+    MemberRelative findByMemberUUIDAndCollectionId(UUID memberUUID, long collectionId);
     MemberRelative save(MemberRelative memberRelative);
     void delete(MemberRelative memberRelative);
 

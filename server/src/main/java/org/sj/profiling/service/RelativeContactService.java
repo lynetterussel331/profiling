@@ -21,16 +21,16 @@ public class RelativeContactService {
         return relativeContactRepository.create(relativeContact);
     }
 
-    public RelativeContact getRelativeContact(UUID UUID) {
-        return relativeContactRepository.get(UUID);
+    public RelativeContact getRelativeContact(UUID relativeUUID, long collectionId) {
+        return relativeContactRepository.get(relativeUUID, collectionId);
     }
 
-    public RelativeContact updateRelativeContact(UUID UUID, RelativeContact relativeContact) {
-        return relativeContactRepository.update(UUID, relativeContact);
+    public RelativeContact updateRelativeContact(UUID relativeUUID, long collectionId, RelativeContact relativeContact) {
+        return relativeContactRepository.update(relativeUUID, collectionId, relativeContact);
     }
 
-    public void deleteRelativeContact(UUID UUID) {
-        relativeContactRepository.delete(UUID);
+    public void deleteRelativeContact(UUID relativeUUID, long collectionId) {
+        relativeContactRepository.delete(relativeUUID, collectionId);
     }
 
 }

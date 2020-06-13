@@ -23,24 +23,25 @@ public class MemberRelativeController {
         return memberRelativeService.getAllMemberRelative(memberUUID);
     }
 
-    @RequestMapping(value = "memberRelatives", method = RequestMethod.POST)
-    public MemberRelative create(@RequestBody MemberRelative memberRelative) {
+    @RequestMapping(value = "memberRelatives/{memberUUID}/{collectionId}", method = RequestMethod.PUT)
+    public MemberRelative get(@PathVariable UUID memberUUID, @PathVariable long collectionId) {
+        return memberRelativeService.getMemberRelative(memberUUID, collectionId);
+    }
+
+    @RequestMapping(value = "memberRelatives/{memberUUID}", method = RequestMethod.POST)
+    public MemberRelative create(@PathVariable UUID memberUUID, @RequestBody MemberRelative memberRelative) {
+        memberRelative.setMemberUUID(memberUUID);
         return memberRelativeService.createMemberRelative(memberRelative);
     }
 
-//    @RequestMapping(value = "memberRelatives/{UUID}", method = RequestMethod.GET)
-//    public MemberRelative get(@PathVariable UUID UUID) {
-//        return memberRelativeService.getMemberRelative(UUID);
-//    }
-
-    @RequestMapping(value = "memberRelatives/{UUID}", method = RequestMethod.PUT)
-    public MemberRelative update(@PathVariable UUID UUID, @RequestBody MemberRelative memberRelative) {
-        return memberRelativeService.updateMemberRelative(UUID, memberRelative);
+    @RequestMapping(value = "memberRelatives/{memberUUID}/{collectionId}", method = RequestMethod.PUT)
+    public MemberRelative update(@PathVariable UUID memberUUID, @PathVariable long collectionId, @RequestBody MemberRelative memberRelative) {
+        return memberRelativeService.updateMemberRelative(memberUUID, collectionId, memberRelative);
     }
 
-    @RequestMapping(value = "memberRelatives/{UUID}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable UUID UUID) {
-        memberRelativeService.deleteMemberRelative(UUID);
+    @RequestMapping(value = "memberRelatives/{memberUUID}/{collectionId}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable UUID memberUUID, @PathVariable long collectionId) {
+        memberRelativeService.deleteMemberRelative(memberUUID, collectionId);
     }
 
 }

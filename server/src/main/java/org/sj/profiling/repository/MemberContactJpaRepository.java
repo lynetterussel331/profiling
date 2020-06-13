@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberContactJpaRepository extends JpaRepository<MemberContact, UUID> {
 
-    Optional<MemberContact> findByUUID(UUID UUID);
+    MemberContact findByMemberUUIDAndCollectionId(UUID memberUUID, long collectionId);
     MemberContact save(MemberContact memberContact);
     void delete(MemberContact memberContact);
 

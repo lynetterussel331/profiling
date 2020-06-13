@@ -23,19 +23,25 @@ public class MemberContactController {
         return memberContactService.getAllMemberContact(memberUUID);
     }
 
-    @RequestMapping(value = "memberContacts", method = RequestMethod.POST)
-    public MemberContact create(@RequestBody MemberContact memberContact) {
+    @RequestMapping(value = "memberContacts/{memberUUID}/{collectionId}", method = RequestMethod.PUT)
+    public MemberContact get(@PathVariable UUID memberUUID, @PathVariable long collectionId) {
+        return memberContactService.getMemberContact(memberUUID, collectionId);
+    }
+
+    @RequestMapping(value = "memberContacts/{memberUUID}", method = RequestMethod.POST)
+    public MemberContact create(@PathVariable UUID memberUUID, @RequestBody MemberContact memberContact) {
+        memberContact.setMemberUUID(memberUUID);
         return memberContactService.createMemberContact(memberContact);
     }
 
-    @RequestMapping(value = "memberContacts/{UUID}", method = RequestMethod.PUT)
-    public MemberContact update(@PathVariable UUID UUID, @RequestBody MemberContact memberContact) {
-        return memberContactService.updateMemberContact(UUID, memberContact);
+    @RequestMapping(value = "memberContacts/{memberUUID}/{collectionId}", method = RequestMethod.PUT)
+    public MemberContact update(@PathVariable UUID memberUUID, @PathVariable long collectionId, @RequestBody MemberContact memberContact) {
+        return memberContactService.updateMemberContact(memberUUID, collectionId, memberContact);
     }
 
-    @RequestMapping(value = "memberContacts/{UUID}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable UUID UUID) {
-        memberContactService.deleteMemberContact(UUID);
+    @RequestMapping(value = "memberContacts/{memberUUID}/{collectionId}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable UUID memberUUID, @PathVariable long collectionId) {
+        memberContactService.deleteMemberContact(memberUUID, collectionId);
     }
 
 }

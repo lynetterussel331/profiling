@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -26,13 +27,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class MemberRelative {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "UUID", updatable = false, nullable = false)
-    private UUID UUID;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "COLLECTION_ID", updatable = false, nullable = false)
+    long collectionId;
 
     @Column(name = "MEMBER_UUID", updatable = false, nullable = false)
     private UUID memberUUID;

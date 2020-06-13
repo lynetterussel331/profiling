@@ -2,7 +2,6 @@ package org.sj.profiling.repository;
 
 import java.util.List;
 import java.util.UUID;
-import org.sj.profiling.exception.ResourceNotFoundException;
 import org.sj.profiling.model.MemberRelative;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -23,24 +22,21 @@ public class MemberRelativeRepository {
         return jpaRepository.save(memberRelative);
     }
 
-    public MemberRelative get(UUID UUID) {
-        return jpaRepository.findByUUID(UUID)
-            .orElseThrow(() -> new ResourceNotFoundException("MemberRelative"));
+    public MemberRelative get(UUID memberUUID, long collectionId) {
+        return jpaRepository.findByMemberUUIDAndCollectionId(memberUUID, collectionId);
     }
 
-    public MemberRelative update(UUID UUID, MemberRelative memberRelative) {
-        MemberRelative existingData = jpaRepository.findByUUID(UUID)
-            .orElseThrow(() -> new ResourceNotFoundException("MemberRelative"));
+    public MemberRelative update(UUID memberUUID, long collectionId, MemberRelative memberRelative) {
+        MemberRelative existingData = jpaRepository.findByMemberUUIDAndCollectionId(memberUUID, collectionId);
 
-        memberRelative.setUUID(UUID);
+        memberRelative.setCollectionId(collectionId);
         memberRelative.setAddedDate(existingData.getAddedDate());
 
         return jpaRepository.save(memberRelative);
     }
 
-    public void delete(UUID UUID) {
-        MemberRelative existingData = jpaRepository.findByUUID(UUID)
-            .orElseThrow(() -> new ResourceNotFoundException("MemberRelative"));
+    public void delete(UUID memberUUID, long collectionId) {
+        MemberRelative existingData = jpaRepository.findByMemberUUIDAndCollectionId(memberUUID, collectionId);
         jpaRepository.delete(existingData);
     }
 

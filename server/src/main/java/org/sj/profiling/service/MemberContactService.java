@@ -21,16 +21,16 @@ public class MemberContactService {
         return memberContactRepository.create(memberContact);
     }
 
-    public MemberContact getMemberContact(UUID UUID) {
-        return memberContactRepository.get(UUID);
+    public MemberContact getMemberContact(UUID memberUUID, long collectionId) {
+        return memberContactRepository.get(memberUUID, collectionId);
     }
 
-    public MemberContact updateMemberContact(UUID UUID, MemberContact memberContact) {
-        return memberContactRepository.update(UUID, memberContact);
+    public MemberContact updateMemberContact(UUID memberUUID, long collectionId, MemberContact memberContact) {
+        return memberContactRepository.update(memberUUID, collectionId, memberContact);
     }
 
-    public void deleteMemberContact(UUID UUID) {
-        memberContactRepository.delete(UUID);
+    public void deleteMemberContact(UUID memberUUID, long collectionId) {
+        memberContactRepository.delete(memberUUID, collectionId);
     }
 
 }

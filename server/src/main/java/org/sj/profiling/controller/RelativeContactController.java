@@ -23,19 +23,25 @@ public class RelativeContactController {
         return relativeContactService.getAllRelativeContact(relativeUUID);
     }
 
-    @RequestMapping(value = "relativeContacts", method = RequestMethod.POST)
-    public RelativeContact create(@RequestBody RelativeContact relativeContact) {
+    @RequestMapping(value = "relativeContacts/{relativeUUID}/{collectionId}", method = RequestMethod.GET)
+    public RelativeContact get(@PathVariable UUID relativeUUID, @PathVariable long collectionId) {
+        return relativeContactService.getRelativeContact(relativeUUID, collectionId);
+    }
+
+    @RequestMapping(value = "relativeContacts/{relativeUUID}", method = RequestMethod.POST)
+    public RelativeContact create(@PathVariable UUID relativeUUID, @RequestBody RelativeContact relativeContact) {
+        relativeContact.setRelativeUUID(relativeUUID);
         return relativeContactService.createRelativeContact(relativeContact);
     }
 
-//    @RequestMapping(value = "relativeContacts/{UUID}", method = RequestMethod.PUT)
-//    public RelativeContact update(@PathVariable UUID UUID, @RequestBody RelativeContact relativeContact) {
-//        return relativeContactService.updateRelativeContact(UUID, relativeContact);
-//    }
+    @RequestMapping(value = "relativeContacts/{relativeUUID}/{collectionId}", method = RequestMethod.PUT)
+    public RelativeContact update(@PathVariable UUID relativeUUID, @PathVariable long collectionId, @RequestBody RelativeContact relativeContact) {
+        return relativeContactService.updateRelativeContact(relativeUUID, collectionId, relativeContact);
+    }
 
-    @RequestMapping(value = "relativeContacts/{UUID}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable UUID UUID) {
-        relativeContactService.deleteRelativeContact(UUID);
+    @RequestMapping(value = "relativeContacts/{relativeUUID}/{collectionId}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable UUID relativeUUID, @PathVariable long collectionId) {
+        relativeContactService.deleteRelativeContact(relativeUUID, collectionId);
     }
 
 }

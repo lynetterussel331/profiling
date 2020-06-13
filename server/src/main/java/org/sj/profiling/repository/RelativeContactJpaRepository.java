@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RelativeContactJpaRepository extends JpaRepository<RelativeContact, UUID> {
 
-    Optional<RelativeContact> findByUUID(UUID UUID);
+    RelativeContact findByRelativeUUIDAndCollectionId(UUID relativeUUID, long collectionId);
     RelativeContact save(RelativeContact relativeContact);
     void delete(RelativeContact relativeContact);
 

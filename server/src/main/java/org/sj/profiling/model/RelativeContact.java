@@ -6,13 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,15 +23,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class RelativeContact {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "UUID", updatable = false, nullable = false)
-    private UUID UUID;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "COLLECTION_ID", updatable = false, nullable = false)
+    long collectionId;
 
-    @Column(name = "RELATIVE_UUID", updatable = false, nullable = false)
+    @Column(name = "UUID", updatable = false, nullable = false)
     private UUID relativeUUID;
 
     @Column(name = "TYPE")

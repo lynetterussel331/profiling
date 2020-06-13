@@ -21,16 +21,16 @@ public class MemberRelativeService {
         return memberRelativeRepository.create(memberRelative);
     }
 
-    public MemberRelative getMemberRelative(UUID UUID) {
-        return memberRelativeRepository.get(UUID);
+    public MemberRelative getMemberRelative(UUID memberUUID, long collectionId) {
+        return memberRelativeRepository.get(memberUUID, collectionId);
     }
 
-    public MemberRelative updateMemberRelative(UUID UUID, MemberRelative memberRelative) {
-        return memberRelativeRepository.update(UUID, memberRelative);
+    public MemberRelative updateMemberRelative(UUID memberUUID, long collectionId, MemberRelative memberRelative) {
+        return memberRelativeRepository.update(memberUUID, collectionId, memberRelative);
     }
 
-    public void deleteMemberRelative(UUID UUID) {
-        memberRelativeRepository.delete(UUID);
+    public void deleteMemberRelative(UUID memberUUID, long collectionId) {
+        memberRelativeRepository.delete(memberUUID, collectionId);
     }
 
 }
