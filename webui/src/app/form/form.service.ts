@@ -11,7 +11,10 @@ export class FormService {
     private httpClient: HttpClient
   ) { }
 
-  getFormModel(item: string): Observable<any> {
+  getFormModel(item: string, collectionType?: string): Observable<any> {
+    if (collectionType) {
+      return this.httpClient.get<any>(`data/${item}/config/collections/form-model-${collectionType}.json`, { responseType: 'json' });
+    }
     return this.httpClient.get<any>(`data/${item}/config/form-model.json`, { responseType: 'json' });
   }
 

@@ -39,8 +39,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const url = this.utilsService.getUrlDetails(this.route);
+    this.updateCollections();
+  }
 
+  updateCollections() {
     this.subscriptions.add(
       this.uiConfigService.getCollectionConfig(this.activeItem.label)
         .pipe(takeUntil(this.onDestroy$))
@@ -49,15 +51,20 @@ export class CollectionsComponent implements OnInit, OnDestroy {
           this.collections.forEach((collection: Collection) => {
             this.type = 'collections';
             this.collectionType = collection.name;
-            this.subscriptions.add(
-              this.apiService.getDetails(collection.path, url.uuid)
-                .pipe(takeUntil(this.onDestroy$))
-                .subscribe(list => this.collectionsData.set(collection.name, { columns: collection.fields, list }),
-                (err) => console.log(err),
-                () => this.setListData(this.collections[0].name))
-            );
+            this.updateListContents(collection);
           });
         })
+    );
+  }
+
+  updateListContents(collection: any) {
+    const url = this.utilsService.getUrlDetails(this.route);
+    this.subscriptions.add(
+      this.apiService.getDetails(collection.path, url.uuid)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(list => this.collectionsData.set(collection.name, { columns: collection.fields, list }),
+        (err) => console.log(err),
+        () => this.setListData(this.collections[0].name))
     );
   }
 

@@ -23,7 +23,7 @@ public class MemberContactController {
         return memberContactService.getAllMemberContact(memberUUID);
     }
 
-    @RequestMapping(value = "memberContacts/{memberUUID}/{collectionId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "memberContacts/{memberUUID}/{collectionId}", method = RequestMethod.GET)
     public MemberContact get(@PathVariable UUID memberUUID, @PathVariable long collectionId) {
         return memberContactService.getMemberContact(memberUUID, collectionId);
     }

@@ -23,7 +23,7 @@ public class MemberRelativeController {
         return memberRelativeService.getAllMemberRelative(memberUUID);
     }
 
-    @RequestMapping(value = "memberRelatives/{memberUUID}/{collectionId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "memberRelatives/{memberUUID}/{collectionId}", method = RequestMethod.GET)
     public MemberRelative get(@PathVariable UUID memberUUID, @PathVariable long collectionId) {
         return memberRelativeService.getMemberRelative(memberUUID, collectionId);
     }

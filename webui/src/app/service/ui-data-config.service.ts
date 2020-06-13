@@ -104,7 +104,7 @@ export class UiDataConfigService {
   }
 
   getCollectionConfig(item: string): Observable<Collection> {
-    return this.httpClient.get<any>(`data/${item}/config/collections.json`, { responseType: 'json' })
+    return this.httpClient.get<any>(`data/${item}/config/collections/collections.json`, { responseType: 'json' })
       .pipe(map(config => config.collections));
   }
 
