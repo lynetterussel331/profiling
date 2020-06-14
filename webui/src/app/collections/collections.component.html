@@ -1,5 +1,2 @@
-<p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
-    <p-tabPanel *ngFor="let coll of collections" [header]="coll.name">
-        <app-list [activeItem]="activeItem" [type]="type" [collectionType]="collectionType" [list]="list" [columns]="columns" (reloadListData)="updateCollections()"></app-list>
-    </p-tabPanel>
-</p-tabView>
+<p-tabMenu #tabContainer [model]="collectionItems" [activeItem]="activeCollection" (click)="updateActiveCollection()"></p-tabMenu>
+<app-list [activeItem]="activeItem" [activeCollection]="activeCollection" [type]="type" [list]="list" [columns]="columns" (reloadListData)="updateListContents()"></app-list>

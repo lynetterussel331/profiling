@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter, S
 import { FormGroup } from '@angular/forms';
 import { FormService } from './form.service';
 import { DynamicFormService, DynamicFormModel } from '@ng-dynamic-forms/core';
-import { MenuConfig, ButtonConfig, UiDataConfigService } from '../service/ui-data-config.service';
+import { MenuConfig, ButtonConfig, UiDataConfigService, Collection } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
 import * as moment from 'moment';
 import { Subscription, Subject } from 'rxjs';
@@ -16,16 +16,20 @@ import { takeUntil } from 'rxjs/operators';
 export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() activeItem: MenuConfig;
+  @Input() activeCollection: any;
   @Input() buttonConfig: ButtonConfig;
   @Input() uuid: string;
+  @Input() collectionId: string;
+  @Input() collectionConfig: Collection;
+  @Input() type: string;
 
   @Output() sendMessage = new EventEmitter<any>();
 
   formData: any;
   formModel: DynamicFormModel;
-  formGroup: FormGroup;
-
+  formGroup: FormGroup = new FormGroup({});
   formHeader: string;
+  collectionLabel: string;
 
   private subscriptions = new Subscription();
   private onDestroy$ = new Subject();
@@ -40,21 +44,25 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.buttonConfig && changes.buttonConfig.currentValue) {
+      this.collectionLabel = this.activeCollection ? this.activeCollection.label : undefined;
       this.loadFormGroup(changes);
       this.loadLabel(changes);
     }
   }
 
   loadLabel(changes: SimpleChanges) {
-    this.uiConfigService.getItemLabel(this.activeItem.label).subscribe( data => {
-      const itemName = data.single;
-      this.formHeader = changes.buttonConfig.currentValue.formSettings.caption + ' ' + itemName;
-    });
+    const formSettings = changes.buttonConfig.currentValue.formSettings;
+    if (formSettings) {
+      this.uiConfigService.getItemLabel(this.activeItem.label).subscribe( data => {
+        const itemName = data.single;
+        this.formHeader = formSettings.caption + ' ' + itemName + ' ' + (this.collectionLabel || '');
+      });
+    }
   }
 
   loadFormGroup(changes: SimpleChanges) {
     this.subscriptions.add(
-      this.formService.getFormModel(this.activeItem.label)
+      this.formService.getFormModel(this.activeItem.label, this.collectionLabel)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(formModelJSON => {
           this.formModel = this.dynamicFormService.fromJSON(formModelJSON);
@@ -65,9 +73,10 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadFormData(changes: SimpleChanges) {
-    if (changes.buttonConfig.currentValue.action === 'update') {
+    const action = changes.buttonConfig.currentValue.action;
+    if (action === 'update') {
       this.subscriptions.add(
-        this.apiService.request(this.activeItem.path, 'list', this.uuid)
+        this.apiService.request(this.activeItem, 'list', this.uuid, this.collectionConfig, this.collectionId)
           .subscribe(data => {
             this.formData = data;
           }, (err) => console.log(err),
@@ -82,6 +91,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
           })
       );
     } else if (this.formGroup) {
+      console.log('Resetting form group...');
       this.formGroup.reset();
     }
   }
@@ -89,9 +99,8 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   onSubmit() {
     const formGroupRawValue = this.formGroup.getRawValue();
     console.log('formGroupRawValue', formGroupRawValue);
-    this.subscriptions.add(
-      this.apiService.requestWithBody(this.activeItem.path, this.buttonConfig, formGroupRawValue, this.uuid)
-        .pipe(takeUntil(this.onDestroy$)).subscribe());
+    this.apiService.requestWithBody(this.activeItem, this.buttonConfig, formGroupRawValue, this.uuid, this.collectionConfig,
+      this.collectionId).pipe(takeUntil(this.onDestroy$)).subscribe();
     let successMessage;
     if (this.buttonConfig.action === 'update') {
       successMessage = 'Item updated successfully!';

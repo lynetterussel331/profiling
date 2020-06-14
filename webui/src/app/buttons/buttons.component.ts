@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, DoCheck, Output } from '@angular/core';
-import { UiDataConfigService, Button, MenuConfig, ButtonConfig } from '../service/ui-data-config.service';
+import { Component, EventEmitter, Input, OnDestroy, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { UiDataConfigService, Button, MenuConfig, ButtonConfig, Collection } from '../service/ui-data-config.service';
 import { Subject, Subscription } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter, flatMap } from 'rxjs/operators';
 import { ConfirmationService } from 'primeng/api';
 import { ApiService } from '../service/api.service';
 import { MessageService } from 'primeng/api';
@@ -11,18 +11,21 @@ import { MessageService } from 'primeng/api';
   templateUrl: './buttons.component.html',
   styleUrls: ['./buttons.component.css']
 })
-export class ButtonsComponent implements DoCheck, OnDestroy {
+export class ButtonsComponent implements OnChanges, OnDestroy {
 
   @Input() activeItem: MenuConfig;
+  @Input() activeCollection: any;
   @Input() type: string;
-  @Input() collectionType: string;
   @Input() uuid: string;
 
   @Output() reloadList = new EventEmitter<string>();
 
+  collectionConfig: Collection;
+  collectionId: string;
+  collectionLabel: string;
+
   buttonConfig: ButtonConfig;
-  buttons: Button[] = [];
-  executed: boolean;
+  buttons: Button[];
   displayForm: boolean;
 
   private subscriptions = new Subscription();
@@ -35,47 +38,66 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
     private messageService: MessageService
   ) { }
 
-  ngDoCheck() {
-    if (!this.executed && this.activeItem) {
-      this.loadButtons(this.type);
-      this.executed = true;
+  ngOnChanges(changes: SimpleChanges) {
+    if ((changes.activeItem && changes.activeItem.currentValue) || (changes.activeCollection && changes.activeCollection.currentValue)) {
+      this.loadButtons();
     }
   }
 
-  clickRadioButton(type: string) {
+  clickRadioButton(type: string, details: any) {
+    if (type === 'collections') {
+      this.collectionId = details.collectionId;
+    }
     this.buttons = [];
-    this.loadButtons(type, true);
+    this.loadButtons(true);
   }
 
-  loadButtons(type: string, buttonClicked?: boolean) {
-    this.subscriptions.add(
-      this.uiConfigService.getButtonsConfig(this.activeItem.label, this.type, this.collectionType)
-      .pipe(filter((button: Button) => {
-        if (['list', 'collections'].includes(type)) {
-          return !buttonClicked && button.displayOnSelect ? false : true;
-        } else {
-          return true;
-        }
-      }),
-        takeUntil(this.onDestroy$))
-        .subscribe(buttons => {
-          this.buttons.push(buttons);
-        })
-    );
+  loadButtons(buttonClicked?: boolean) {
+    if (this.type) {
+      this.buttons = [];
+      this.collectionLabel = this.activeCollection ? this.activeCollection.label : undefined;
+      this.subscriptions.add(
+        this.uiConfigService.getButtonsConfig(this.activeItem.label, this.type, this.collectionLabel)
+        .pipe(filter((button: Button) => {
+          if (['list', 'collections'].includes(this.type)) {
+            return !buttonClicked && button.displayOnSelect ? false : true;
+          } else {
+            return true;
+          }
+        }),
+          takeUntil(this.onDestroy$))
+          .subscribe(buttons => {
+            this.buttons.push(buttons);
+          })
+      );
+      this.loadCollectionConfig();
+    }
+  }
+
+  loadCollectionConfig() {
+      if (this.activeCollection) {
+        this.uiConfigService.getCollectionConfig(this.activeItem.label)
+          .pipe(flatMap((array: any) => array),
+            filter((rec: Collection) => rec.name === this.collectionLabel))
+            .subscribe(coll => {
+              this.collectionConfig = coll;
+            });
+      }
   }
 
   clickButton(button: Button) {
     this.subscriptions.add(
       this.uiConfigService.getGlobalButtonConfig(button.label)
-      .subscribe(config => {
-        this.buttonConfig = config;
-        if (config.confirmMessage) {
-          this.confirm(config);
-        } else {
-          this.displayForm = true;
-        }
-      })
-    );
+      .pipe(takeUntil(this.onDestroy$))
+        .subscribe(config => {
+          this.buttonConfig = config;
+          if (config.confirmMessage) {
+            this.confirm(config);
+          } else {
+            this.displayForm = true;
+          }
+        })
+      );
   }
 
   confirm(config: ButtonConfig) {
@@ -83,7 +105,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
       message: config.confirmMessage,
       accept: () => {
         this.subscriptions.add(
-          this.apiService.request(this.activeItem.path, config.action, this.uuid).subscribe()
+          this.apiService.request(this.activeItem, config.action, this.uuid, this.collectionConfig, this.collectionId).subscribe()
         );
         this.reloadList.emit(config.action);
       }
@@ -95,6 +117,7 @@ export class ButtonsComponent implements DoCheck, OnDestroy {
   }
 
   sendMessage(message) {
+    console.log('Displaying message..');
     this.displayForm = false;
     this.messageService.add({key: 'message', severity: 'success', summary: 'Successful', detail: message});
     this.reloadList.emit();

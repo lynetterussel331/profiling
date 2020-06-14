@@ -1,5 +1,5 @@
-import { Component, DoCheck, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { MenuConfig, List } from '../service/ui-data-config.service';
+import { Component, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { MenuConfig, List, Collection } from '../service/ui-data-config.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { ApiService } from '../service/api.service';
@@ -10,11 +10,11 @@ import { UtilsService } from '../service/utils.service';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements DoCheck, OnDestroy {
+export class ListComponent implements OnChanges, OnDestroy {
 
   @Input() activeItem: MenuConfig;
+  @Input() activeCollection: Collection;
   @Input() type: string;
-  @Input() collectionType: string;
   @Input() columns: List[];
   @Input() list: any;
   @Output() reloadListData = new EventEmitter<any>();
@@ -26,7 +26,6 @@ export class ListComponent implements DoCheck, OnDestroy {
   subscriptions = new Subscription();
   onDestroy$ = new Subject();
 
-  executed: boolean;
   distinctValuesMap = new Map<string, any[]>();
   globalFilterFields: any[];
 
@@ -42,13 +41,12 @@ export class ListComponent implements DoCheck, OnDestroy {
     this.nonFilterFieldTypes = ['radiobutton'];
   }
 
-  ngDoCheck() {
-    if (!this.executed && this.columns) {
+  ngOnChanges() {
+    if (this.columns && this.list) {
       this.globalFilterFields = this.columns.filter(col => !this.nonFilterFieldTypes.includes(col.type)).map(col => col.name);
       const filteredCols = this.columns.filter(col => col.filter).map(col => col.name);
       this.apiService.getDistinctValuesMap(this.activeItem.path, filteredCols)
         .subscribe(data => this.distinctValuesMap = data);
-      this.executed = true;
     }
     this.uuid = this.utilsService.getUrlDetails(this.route).uuid;
   }

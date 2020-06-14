@@ -59,10 +59,8 @@ export class ApiService {
     }
 
     if (config.action === 'create') {
-      console.log('create', url);
       return this.http.post<any>(url, body);
     } else if (config.action === 'update') {
-      console.log('update');
       return this.http.put<any>(url, body);
     }
   }

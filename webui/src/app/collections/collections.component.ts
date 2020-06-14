@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UiDataConfigService, MenuConfig, Collection } from '../service/ui-data-config.service';
 import { ApiService } from '../service/api.service';
@@ -13,10 +13,11 @@ import { UtilsService } from '../service/utils.service';
 })
 export class CollectionsComponent implements OnInit, OnDestroy {
 
+  @ViewChild('tabContainer') tabContainer;
+
   @Input() activeItem: MenuConfig;
 
   type: string;
-  collectionType: string;
   rows: number;
   list: any;
   columns: any;
@@ -25,6 +26,8 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   collections: any;
   collectionsData = new Map();
+  collectionItems: any[] = [];
+  activeCollection: any;
 
   subscriptions = new Subscription();
   onDestroy$ = new Subject();
@@ -39,38 +42,36 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.updateCollections();
-  }
-
-  updateCollections() {
     this.subscriptions.add(
       this.uiConfigService.getCollectionConfig(this.activeItem.label)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((collections: any) => {
           this.collections = collections;
+          this.type = 'collections';
           this.collections.forEach((collection: Collection) => {
-            this.type = 'collections';
-            this.collectionType = collection.name;
-            this.updateListContents(collection);
+            this.collectionItems.push({ label: collection.name, path: collection.path });
           });
+          this.activeCollection = this.collectionItems[0];
+          this.updateListContents();
         })
     );
   }
 
-  updateListContents(collection: any) {
+  updateListContents() {
+    const collection = this.collections.filter(coll => coll.name === this.activeCollection.label)[0];
     const url = this.utilsService.getUrlDetails(this.route);
     this.subscriptions.add(
       this.apiService.getDetails(collection.path, url.uuid)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(list => this.collectionsData.set(collection.name, { columns: collection.fields, list }),
         (err) => console.log(err),
-        () => this.setListData(this.collections[0].name))
+        () => this.setListData(collection.name))
     );
   }
 
-  handleChange(e) {
-    this.index = e.index;
-    this.setListData(this.collections[this.index].name);
+  updateActiveCollection() {
+    this.activeCollection = this.tabContainer.activeItem;
+    this.updateListContents();
   }
 
   setListData(collectionName: string) {

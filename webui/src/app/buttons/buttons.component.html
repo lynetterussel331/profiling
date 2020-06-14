@@ -2,6 +2,6 @@
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast key="message" position="center"></p-toast>
 <p-sidebar [(visible)]="displayForm" [closeOnEscape]=false [dismissible]=false (onHide)="onHide()">
-    <app-form [activeItem]="activeItem" [buttonConfig]="buttonConfig"
-        [uuid]="uuid" (sendMessage)="sendMessage($event)"></app-form>
+    <app-form [activeItem]="activeItem" [buttonConfig]="buttonConfig" [uuid]="uuid" (sendMessage)="sendMessage($event)"
+        [type]="type" [activeCollection]="activeCollection" [collectionConfig]="collectionConfig" [collectionId]="collectionId"></app-form>
 </p-sidebar>

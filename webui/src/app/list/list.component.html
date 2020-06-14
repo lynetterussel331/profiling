@@ -1,8 +1,8 @@
-<app-buttons [activeItem]="activeItem" [type]="type" [collectionType]="collectionType" [uuid]="uuid" (reloadList)="reloadList()" #buttonComponent></app-buttons>
+<app-buttons [activeItem]="activeItem" [activeCollection]="activeCollection" [type]="type" [uuid]="uuid" (reloadList)="reloadList()" #buttonComponent></app-buttons>
 <p-table #dataTable [value]="list" [paginator]="true" [rows]="rows" [(selection)]="selectedRow" styleClass="ui-table-generic" [rowHover]="true"
     [globalFilterFields]="globalFilterFields">
     <ng-template *ngIf="type === 'list'" pTemplate="caption">
-        {{ activeItem.label }} List
+        {{ activeItem ? activeItem.label : '' }} List
         <div *ngIf="globalFilterFields" class="ui-table-globalfilter-container">
             <input pInputType type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')" placeholder="Global Search">
         </div>
@@ -39,7 +39,7 @@
                         <button pButton type="button" class="ui-button-secondary" icon="pi pi-cog" (click)="redirectToDetails(details.uuid)"></button>
                     </div>
                     <div *ngSwitchCase="'radiobutton'">
-                        <p-radioButton name="uuid" [value]="details[col.name]" [(ngModel)]="uuid" (click)="buttonComponent.clickRadioButton(type)"></p-radioButton>
+                        <p-radioButton name="uuid" [value]="details[col.name]" [(ngModel)]="uuid" (click)="buttonComponent.clickRadioButton(type, details)"></p-radioButton>
                     </div>
                     <div *ngSwitchDefault>
                         <span class="ui-column-title">{{ col.caption }}</span>
