@@ -3,7 +3,7 @@
         "name": "Contacts", 
         "path": "memberContacts",
         "fields": [
-            { "name": "uuid", "type": "radiobutton" },
+            { "name": "memberUUID", "type": "radiobutton" },
             { "name": "type", "caption": "Type" },
             { "name": "value", "caption": "Value" }
         ]
@@ -12,7 +12,7 @@
         "name": "Relatives",
         "path": "memberRelatives",
         "fields": [
-            { "name": "uuid", "type": "radiobutton", "parent": { "name": "relativeUUID", "path": "relatives" } },
+            { "name": "memberUUID", "type": "radiobutton", "parent": { "name": "relativeUUID", "path": "relatives" } },
             { "name": "firstName", "caption": "First Name" },
             { "name": "middleName", "caption": "Middle Name" },
             { "name": "lastName", "caption": "Last Name" },

@@ -3,7 +3,7 @@
         "name": "Contacts",
         "path": "relativeContacts",
         "fields": [
-            { "name": "uuid", "type": "radiobutton" },
+            { "name": "relativeUUID", "type": "radiobutton" },
             { "name": "type", "caption": "Type" },
             { "name": "value", "caption": "Value" }
         ]
