@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.sj.profiling.model.Element;
 import org.sj.profiling.model.Relative;
 import org.sj.profiling.service.RelativeService;
+import org.sj.profiling.utils.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,13 +38,6 @@ public class RelativeController {
         log.info(createdRelative.toString());
         return createdRelative;
     }
-
-//    @RequestMapping(value = "relatives", method = RequestMethod.POST)
-//    public List<Relative> createList(@RequestBody List<Relative> relativeList) {
-//        List<Relative> createdRelatives = relativeService.createRelatives(relativeList);
-//        log.info(createdRelatives.toString());
-//        return createdRelatives;
-//    }
 
     @RequestMapping(value = "relatives/{UUID}", method = RequestMethod.GET)
     public Relative get(@PathVariable UUID UUID) {
@@ -77,6 +72,13 @@ public class RelativeController {
 
         log.info("distinctValuesMap: " + distinctValuesMap);
         return distinctValuesMap;
+    }
+
+    @RequestMapping(value = "relatives/form", method = RequestMethod.GET)
+    public List<Element> getFormModel() {
+        List<Element> formModel = FormUtils.getFormModel(Relative.class);
+        log.info("formModel:: {}", formModel);
+        return formModel;
     }
 
 }

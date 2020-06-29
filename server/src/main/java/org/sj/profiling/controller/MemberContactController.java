@@ -2,8 +2,11 @@ package org.sj.profiling.controller;
 
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
+import org.sj.profiling.model.Element;
 import org.sj.profiling.model.MemberContact;
 import org.sj.profiling.service.MemberContactService;
+import org.sj.profiling.utils.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("api/")
 public class MemberContactController {
@@ -42,6 +46,13 @@ public class MemberContactController {
     @RequestMapping(value = "memberContacts/{memberUUID}/{collectionId}", method = RequestMethod.DELETE)
     public void delete(@PathVariable UUID memberUUID, @PathVariable long collectionId) {
         memberContactService.deleteMemberContact(memberUUID, collectionId);
+    }
+
+    @RequestMapping(value = "memberContacts/form", method = RequestMethod.GET)
+    public List<Element> getFormModel() {
+        List<Element> formModel = FormUtils.getFormModel(MemberContact.class);
+        log.info("formModel:: {}", formModel);
+        return formModel;
     }
 
 }

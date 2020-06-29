@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.sj.profiling.model.Element;
 import org.sj.profiling.model.Member;
 import org.sj.profiling.service.MemberService;
+import org.sj.profiling.utils.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,13 +38,6 @@ public class MemberController {
         log.info(createdMember.toString());
         return createdMember;
     }
-
-//    @RequestMapping(value = "members", method = RequestMethod.POST)
-//    public List<Member> createList(@RequestBody List<Member> memberList) {
-//        List<Member> createdMembers = memberService.createMembers(memberList);
-//        log.info(createdMembers.toString());
-//        return createdMembers;
-//    }
 
     @RequestMapping(value = "members/{UUID}", method = RequestMethod.GET)
     public Member get(@PathVariable UUID UUID) {
@@ -77,6 +72,13 @@ public class MemberController {
 
         log.info("distinctValuesMap: " + distinctValuesMap);
         return distinctValuesMap;
+    }
+
+    @RequestMapping(value = "members/form", method = RequestMethod.GET)
+    public List<Element> getFormModel() {
+        List<Element> formModel = FormUtils.getFormModel(Member.class);
+        log.info("formModel:: {}", formModel);
+        return formModel;
     }
 
 }

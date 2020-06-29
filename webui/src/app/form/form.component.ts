@@ -62,12 +62,12 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   loadFormGroup(changes: SimpleChanges) {
     this.subscriptions.add(
-      this.formService.getFormModel(this.activeItem.label, this.collectionLabel)
+      this.apiService.getForm(this.activeItem, this.collectionConfig)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(formModelJSON => {
           this.formModel = this.dynamicFormService.fromJSON(formModelJSON);
           this.formGroup = this.dynamicFormService.createFormGroup(this.formModel);
-      })
+        })
     );
     this.loadFormData(changes);
   }

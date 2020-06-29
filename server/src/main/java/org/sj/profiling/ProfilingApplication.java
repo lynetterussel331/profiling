@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ProfilingApplication {
 
 	public static void main(String[] args) {
+		FormModelGeneration.generateFormModels();
 		SpringApplication.run(ProfilingApplication.class, args);
 	}
 

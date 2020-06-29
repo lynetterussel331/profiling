@@ -6,7 +6,7 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.sj.profiling.model.Member;
 import org.sj.profiling.repository.MemberRepository;
-import org.sj.profiling.utils.StringUtils.Filter;
+import org.sj.profiling.utils.FormUtils.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

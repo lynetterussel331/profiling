@@ -65,4 +65,9 @@ export class ApiService {
     }
   }
 
+  getForm(activeItem: MenuConfig, collectionConfig?: Collection) {
+    const url = '/api/' + (collectionConfig ? collectionConfig.path : activeItem.path) + '/form';
+    return this.http.get<any>(url);
+  }
+
 }
