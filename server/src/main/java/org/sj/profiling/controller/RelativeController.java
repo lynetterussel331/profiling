@@ -1,5 +1,7 @@
 package org.sj.profiling.controller;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,8 @@ public class RelativeController {
 
     @Autowired
     private RelativeService relativeService;
+    private final static String ITEMNAME = "Relative";
+    private final static String PATH = "relatives";
 
     @RequestMapping(value = "relatives", method = RequestMethod.GET)
     public List<Relative> list() {
@@ -74,11 +78,9 @@ public class RelativeController {
         return distinctValuesMap;
     }
 
-    @RequestMapping(value = "relatives/form", method = RequestMethod.GET)
-    public List<Element> getFormModel() {
-        List<Element> formModel = FormUtils.getFormModel(Relative.class);
-        log.info("formModel:: {}", formModel);
-        return formModel;
+    @RequestMapping(value = PATH + "/form", method = RequestMethod.GET, produces = "application/json")
+    public String getFormModel() throws IOException, URISyntaxException {
+        return FormUtils.getFormModelJSON(ITEMNAME);
     }
 
 }

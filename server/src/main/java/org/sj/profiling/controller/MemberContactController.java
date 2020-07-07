@@ -1,5 +1,7 @@
 package org.sj.profiling.controller;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,8 @@ public class MemberContactController {
 
     @Autowired
     private MemberContactService memberContactService;
+    private final static String ITEMNAME = "MemberContact";
+    private final static String PATH = "memberContacts";
 
     @RequestMapping(value = "memberContacts/{memberUUID}", method = RequestMethod.GET)
     public List<MemberContact> list(@PathVariable UUID memberUUID) {
@@ -48,11 +52,9 @@ public class MemberContactController {
         memberContactService.deleteMemberContact(memberUUID, collectionId);
     }
 
-    @RequestMapping(value = "memberContacts/form", method = RequestMethod.GET)
-    public List<Element> getFormModel() {
-        List<Element> formModel = FormUtils.getFormModel(MemberContact.class);
-        log.info("formModel:: {}", formModel);
-        return formModel;
+    @RequestMapping(value = PATH + "/form", method = RequestMethod.GET, produces = "application/json")
+    public String getFormModel() throws IOException, URISyntaxException {
+        return FormUtils.getFormModelJSON(ITEMNAME);
     }
 
 }

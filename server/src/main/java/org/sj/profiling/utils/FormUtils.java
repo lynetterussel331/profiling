@@ -1,6 +1,13 @@
 package org.sj.profiling.utils;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -70,6 +77,12 @@ public class FormUtils {
             isRequired = !column.nullable();
         }
         element.setRequired(isRequired);
+    }
+
+    public static String getFormModelJSON(String itemName) throws URISyntaxException, IOException {
+        URI uri = ClassLoader.getSystemResource("form-models/" +  itemName + ".json").toURI();
+        Path filePath = Paths.get(uri);
+        return new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8);
     }
 
 }
