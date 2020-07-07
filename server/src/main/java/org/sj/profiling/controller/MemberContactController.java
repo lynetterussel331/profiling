@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.sj.profiling.model.Element;
 import org.sj.profiling.model.MemberContact;
 import org.sj.profiling.service.MemberContactService;
 import org.sj.profiling.utils.FormUtils;

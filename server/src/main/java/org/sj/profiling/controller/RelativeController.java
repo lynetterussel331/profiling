@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.sj.profiling.model.Element;
 import org.sj.profiling.model.Relative;
 import org.sj.profiling.service.RelativeService;
 import org.sj.profiling.utils.FormUtils;
