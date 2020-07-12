@@ -4,7 +4,7 @@
         "path": "memberContacts",
         "fields": [
             { "name": "memberUUID", "type": "radiobutton" },
-            { "name": "type", "caption": "Type" },
+            { "name": "contactType", "caption": "Type" },
             { "name": "value", "caption": "Value" }
         ]
     },

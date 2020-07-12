@@ -25,7 +25,7 @@ public enum Relationship {
         return label;
     }
 
-    public List<String> getRelationshipList() {
+    public List<String> getList() {
         return new ArrayList<>(
             Arrays.asList( SPOUSE.getLabel(), FATHER.getLabel(), MOTHER.getLabel(), CHILD.getLabel(),
                 BROTHER.getLabel(), SISTER.getLabel(), GUARDIAN.getLabel(), OTHER.getLabel() )

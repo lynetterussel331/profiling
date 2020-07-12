@@ -1,0 +1,26 @@
+[ {
+  "type" : "SELECT",
+  "id" : "contactType",
+  "label" : "Contact Type",
+  "maxLength" : 50,
+  "placeholder" : "Contact Type",
+  "required" : false,
+  "options" : [ {
+    "label" : "",
+    "value" : ""
+  }, {
+    "label" : "PHONE",
+    "value" : "PHONE"
+  }, {
+    "label" : "EMAIL",
+    "value" : "EMAIL"
+  } ]
+}, {
+  "type" : "INPUT",
+  "id" : "value",
+  "label" : "Value",
+  "maxLength" : 50,
+  "placeholder" : "Value",
+  "required" : false,
+  "options" : null
+} ]

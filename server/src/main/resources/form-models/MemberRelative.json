@@ -1,0 +1,44 @@
+[ {
+  "type" : "INPUT",
+  "id" : "mainDetails",
+  "label" : "Main Details",
+  "maxLength" : 50,
+  "placeholder" : "Main Details",
+  "required" : false,
+  "options" : null
+}, {
+  "type" : "SELECT",
+  "id" : "relationship",
+  "label" : "Relationship",
+  "maxLength" : 50,
+  "placeholder" : "Relationship",
+  "required" : false,
+  "options" : [ {
+    "label" : "",
+    "value" : ""
+  }, {
+    "label" : "SPOUSE",
+    "value" : "SPOUSE"
+  }, {
+    "label" : "FATHER",
+    "value" : "FATHER"
+  }, {
+    "label" : "MOTHER",
+    "value" : "MOTHER"
+  }, {
+    "label" : "CHILD",
+    "value" : "CHILD"
+  }, {
+    "label" : "BROTHER",
+    "value" : "BROTHER"
+  }, {
+    "label" : "SISTER",
+    "value" : "SISTER"
+  }, {
+    "label" : "GUARDIAN",
+    "value" : "GUARDIAN"
+  }, {
+    "label" : "OTHER",
+    "value" : "OTHER"
+  } ]
+} ]

@@ -32,13 +32,13 @@ public class Member {
     @Column(name = "UUID", updatable = false, nullable = false)
     private UUID UUID;
 
-    @Column(name = "FIRST_NAME")
+    @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
 
-    @Column(name = "MIDDLE_NAME")
+    @Column(name = "MIDDLE_NAME", nullable = false)
     private String middleName;
 
-    @Column(name = "LAST_NAME")
+    @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
 
     @Column(name = "BIRTHDATE")
@@ -47,7 +47,7 @@ public class Member {
     @Column(name = "BIRTHPLACE")
     private String birthplace;
 
-    @Column(name = "GENDER")
+    @Column(name = "GENDER", nullable = false)
     private String gender;
 
     @Column(name = "BRGY_REG_VOTER")

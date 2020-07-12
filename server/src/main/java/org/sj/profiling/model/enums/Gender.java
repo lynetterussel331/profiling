@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public enum ContactType {
+public enum Gender {
 
-    PHONE("PHONE"),
-    EMAIL("EMAIL");
+    FEMALE("FEMALE"),
+    MALE("MALE");
 
     private String label;
 
-    private ContactType(String label) {
+    private Gender(String label) {
         this.label = label;
     }
 
@@ -21,8 +21,7 @@ public enum ContactType {
 
     public List<String> getList() {
         return new ArrayList<>(
-            Arrays.asList( PHONE.getLabel(), EMAIL.getLabel() )
+            Arrays.asList( FEMALE.getLabel(), MALE.getLabel() )
         );
     }
-
 }

@@ -1,0 +1,82 @@
+[ {
+  "type" : "INPUT",
+  "id" : "firstName",
+  "label" : "First Name",
+  "maxLength" : 50,
+  "placeholder" : "First Name",
+  "required" : true,
+  "options" : null
+}, {
+  "type" : "INPUT",
+  "id" : "middleName",
+  "label" : "Middle Name",
+  "maxLength" : 50,
+  "placeholder" : "Middle Name",
+  "required" : true,
+  "options" : null
+}, {
+  "type" : "INPUT",
+  "id" : "lastName",
+  "label" : "Last Name",
+  "maxLength" : 50,
+  "placeholder" : "Last Name",
+  "required" : true,
+  "options" : null
+}, {
+  "type" : "DATEPICKER",
+  "id" : "birthdate",
+  "label" : "Birthdate",
+  "maxLength" : 50,
+  "placeholder" : "Birthdate",
+  "required" : false,
+  "options" : null
+}, {
+  "type" : "INPUT",
+  "id" : "birthplace",
+  "label" : "Birthplace",
+  "maxLength" : 50,
+  "placeholder" : "Birthplace",
+  "required" : false,
+  "options" : null
+}, {
+  "type" : "SELECT",
+  "id" : "gender",
+  "label" : "Gender",
+  "maxLength" : 50,
+  "placeholder" : "Gender",
+  "required" : true,
+  "options" : [ {
+    "label" : "",
+    "value" : ""
+  }, {
+    "label" : "FEMALE",
+    "value" : "FEMALE"
+  }, {
+    "label" : "MALE",
+    "value" : "MALE"
+  } ]
+}, {
+  "type" : "SWITCH",
+  "id" : "brgyRegVoter",
+  "label" : "Brgy Reg Voter",
+  "maxLength" : 50,
+  "placeholder" : "Brgy Reg Voter",
+  "required" : false,
+  "options" : null
+}, {
+  "type" : "INPUT",
+  "id" : "occupation",
+  "label" : "Occupation",
+  "maxLength" : 50,
+  "placeholder" : "Occupation",
+  "required" : false,
+  "options" : null
+}, {
+  "type" : "INPUT",
+  "id" : "address",
+  "label" : "Address",
+  "maxLength" : 50,
+  "placeholder" : "Address",
+  "required" : false,
+  "options" : null
+} ]

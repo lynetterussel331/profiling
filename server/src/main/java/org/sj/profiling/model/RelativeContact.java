@@ -31,7 +31,7 @@ public class RelativeContact {
     private UUID relativeUUID;
 
     @Column(name = "TYPE")
-    private String type;
+    private String contactType;
 
     @Column(name = "VALUE")
     private String value;

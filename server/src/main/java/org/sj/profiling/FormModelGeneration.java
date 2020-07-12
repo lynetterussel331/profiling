@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,11 +42,8 @@ public class FormModelGeneration {
     }
 
     private static void createFormModelFile(String item, String fileContent) throws IOException {
-        String resourcePath = FormModelGeneration.class.getClassLoader().getResource(".").getPath() + "form-models/";
-        File dir = new File(resourcePath);
-        if (!dir.exists()) dir.mkdir();
-
-        String fileName = resourcePath + item + ".json";
+        Path resourcePath = Paths.get("./src/main/resources");
+        String fileName = resourcePath + "/form-models/" + item + ".json";
         File file = new File(fileName);
         if (file.createNewFile()) {
             log.info("File is created!");
