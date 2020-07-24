@@ -116,7 +116,7 @@ public class FormUtils {
         element.setRequired(isRequired);
     }
 
-    public static String getFormModelJSON(String item) throws URISyntaxException, IOException {
+    public static String getFormModelJSON(String item) throws IOException {
         Path fileName = Paths.get("./src/main/resources/form-models/" + item + ".json");
         URI uri = fileName.toUri();
         Path filePath = Paths.get(uri);
